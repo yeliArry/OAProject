@@ -16,6 +16,11 @@
     </description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-meeting</artifactId>
+            <version>${ruoyi.version}</version>
+        </dependency>
 
         <!-- SpringBoot集成thymeleaf模板 -->
         <dependency>

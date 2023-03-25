@@ -884,7 +884,8 @@ var table = {
             },
             // 弹出层指定参数选项
             openOptions: function (options) {
-                var _url = $.common.isEmpty(options.url) ? "/404.html" : options.url; 
+                var _url = $.common.isEmpty(options.url) ? "/404.html" : options.url;
+                // alert(options.url);
                 var _title = $.common.isEmpty(options.title) ? "系统窗口" : options.title; 
                 var _width = $.common.isEmpty(options.width) ? "800" : options.width; 
                 var _height = $.common.isEmpty(options.height) ? ($(window).height() - 50) : options.height;
@@ -1122,6 +1123,7 @@ var table = {
             add: function(id) {
                 table.set();
                 $.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
+
             },
             // 添加信息，以tab页展现
             addTab: function (id) {
