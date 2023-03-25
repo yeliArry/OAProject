@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.synergy.mapper.OaReferenceBlockMapper">
+    
+    <resultMap type="OaReferenceBlock" id="OaReferenceBlockResult">
+        <result property="blockId"    column="block_id"    />
+        <result property="blockName"    column="block_name"    />
+        <result property="unitType"    column="unit_type"    />
+        <result property="storageId"    column="storage_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="blockStatus"    column="block_status"    />
+        <result property="usageState"    column="usage_state"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectOaReferenceBlockVo">
+        select block_id, block_name, unit_type, storage_id, user_id, creation_time, block_status, usage_state, del_flag, created_by, created_time, updated_by, updated_time from oa_reference_block
+    </sql>
+
+    <select id="selectOaReferenceBlockList" parameterType="OaReferenceBlock" resultMap="OaReferenceBlockResult">
+        <include refid="selectOaReferenceBlockVo"/>
+        <where>  
+            <if test="blockName != null  and blockName != ''"> and block_name like concat('%', #{blockName}, '%')</if>
+            <if test="unitType != null  and unitType != ''"> and unit_type = #{unitType}</if>
+            <if test="storageId != null  and storageId != ''"> and storage_id = #{storageId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+            <if test="blockStatus != null "> and block_status = #{blockStatus}</if>
+            <if test="usageState != null "> and usage_state = #{usageState}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaReferenceBlockByBlockId" parameterType="Long" resultMap="OaReferenceBlockResult">
+        <include refid="selectOaReferenceBlockVo"/>
+        where block_id = #{blockId}
+    </select>
+        
+    <insert id="insertOaReferenceBlock" parameterType="OaReferenceBlock" useGeneratedKeys="true" keyProperty="blockId">
+        insert into oa_reference_block
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blockName != null and blockName != ''">block_name,</if>
+            <if test="unitType != null and unitType != ''">unit_type,</if>
+            <if test="storageId != null and storageId != ''">storage_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="creationTime != null">creation_time,</if>
+            <if test="blockStatus != null">block_status,</if>
+            <if test="usageState != null">usage_state,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blockName != null and blockName != ''">#{blockName},</if>
+            <if test="unitType != null and unitType != ''">#{unitType},</if>
+            <if test="storageId != null and storageId != ''">#{storageId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="creationTime != null">#{creationTime},</if>
+            <if test="blockStatus != null">#{blockStatus},</if>
+            <if test="usageState != null">#{usageState},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaReferenceBlock" parameterType="OaReferenceBlock">
+        update oa_reference_block
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="blockName != null and blockName != ''">block_name = #{blockName},</if>
+            <if test="unitType != null and unitType != ''">unit_type = #{unitType},</if>
+            <if test="storageId != null and storageId != ''">storage_id = #{storageId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="creationTime != null">creation_time = #{creationTime},</if>
+            <if test="blockStatus != null">block_status = #{blockStatus},</if>
+            <if test="usageState != null">usage_state = #{usageState},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where block_id = #{blockId}
+    </update>
+
+    <delete id="deleteOaReferenceBlockByBlockId" parameterType="Long">
+        delete from oa_reference_block where block_id = #{blockId}
+    </delete>
+
+    <delete id="deleteOaReferenceBlockByBlockIds" parameterType="String">
+        delete from oa_reference_block where block_id in 
+        <foreach item="blockId" collection="array" open="(" separator="," close=")">
+            #{blockId}
+        </foreach>
+    </delete>
+
+</mapper>

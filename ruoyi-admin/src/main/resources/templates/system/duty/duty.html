@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('值班列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>值班名称：</label>
+                                <input type="text" name="dName"/>
+                            </li>
+                            <li>
+                                <label>排班id：</label>
+                                <input type="text" name="scheduleId"/>
+                            </li>
+                            <li>
+                                <label>部门id：</label>
+                                <input type="text" name="deptId"/>
+                            </li>
+                            <li>
+                                <label>创建人：</label>
+                                <input type="text" name="userId"/>
+                            </li>
+                            <li>
+                                <label>当前时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择当前时间" name="currentTime"/>
+                            </li>
+                            <li>
+                                <label>值班人：</label>
+                                <input type="text" name="dPeople"/>
+                            </li>
+                            <li>
+                                <label>值班状态：</label>
+                                <input type="text" name="dState"/>
+                            </li>
+                            <li>
+                                <label>附件：</label>
+                                <input type="text" name="dAttachment"/>
+                            </li>
+                            <li>
+                                <label>备注：</label>
+                                <input type="text" name="dComment"/>
+                            </li>
+                            <li>
+                                <label>创建人：</label>
+                                <input type="text" name="createdBy"/>
+                            </li>
+                            <li>
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createdTime"/>
+                            </li>
+                            <li>
+                                <label>更新人：</label>
+                                <input type="text" name="updatedBy"/>
+                            </li>
+                            <li>
+                                <label>更新时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择更新时间" name="updatedTime"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:duty:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:duty:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:duty:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:duty:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:duty:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:duty:remove')}]];
+        var prefix = ctx + "system/duty";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "值班",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'dId',
+                    title: '值班表id主键',
+                    visible: false
+                },
+                {
+                    field: 'dName',
+                    title: '值班名称'
+                },
+                {
+                    field: 'scheduleId',
+                    title: '排班id'
+                },
+                {
+                    field: 'deptId',
+                    title: '部门id'
+                },
+                {
+                    field: 'userId',
+                    title: '创建人'
+                },
+                {
+                    field: 'currentTime',
+                    title: '当前时间'
+                },
+                {
+                    field: 'dPeople',
+                    title: '值班人'
+                },
+                {
+                    field: 'dState',
+                    title: '值班状态'
+                },
+                {
+                    field: 'dAttachment',
+                    title: '附件'
+                },
+                {
+                    field: 'dComment',
+                    title: '备注'
+                },
+                {
+                    field: 'createdBy',
+                    title: '创建人'
+                },
+                {
+                    field: 'createdTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updatedBy',
+                    title: '更新人'
+                },
+                {
+                    field: 'updatedTime',
+                    title: '更新时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.dId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.dId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

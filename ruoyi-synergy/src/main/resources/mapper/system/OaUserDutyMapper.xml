@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.synergy.mapper.OaUserDutyMapper">
+    
+    <resultMap type="OaUserDuty" id="OaUserDutyResult">
+        <result property="dId"    column="d_id"    />
+        <result property="dName"    column="d_name"    />
+        <result property="scheduleId"    column="schedule_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="currentTime"    column="current_time"    />
+        <result property="dPeople"    column="d_people"    />
+        <result property="dState"    column="d_state"    />
+        <result property="dAttachment"    column="d_attachment"    />
+        <result property="dComment"    column="d_comment"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectOaUserDutyVo">
+        select d_id, d_name, schedule_id, dept_id, user_id, current_time, d_people, d_state, d_attachment, d_comment, del_flag, created_by, created_time, updated_by, updated_time from oa_user_duty
+    </sql>
+
+    <select id="selectOaUserDutyList" parameterType="OaUserDuty" resultMap="OaUserDutyResult">
+        <include refid="selectOaUserDutyVo"/>
+        <where>  
+            <if test="dName != null  and dName != ''"> and d_name like concat('%', #{dName}, '%')</if>
+            <if test="scheduleId != null "> and schedule_id = #{scheduleId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="currentTime != null "> and current_time = #{currentTime}</if>
+            <if test="dPeople != null  and dPeople != ''"> and d_people = #{dPeople}</if>
+            <if test="dState != null "> and d_state = #{dState}</if>
+            <if test="dAttachment != null  and dAttachment != ''"> and d_attachment = #{dAttachment}</if>
+            <if test="dComment != null  and dComment != ''"> and d_comment = #{dComment}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaUserDutyByDId" parameterType="Long" resultMap="OaUserDutyResult">
+        <include refid="selectOaUserDutyVo"/>
+        where d_id = #{dId}
+    </select>
+        
+    <insert id="insertOaUserDuty" parameterType="OaUserDuty" useGeneratedKeys="true" keyProperty="dId">
+        insert into oa_user_duty
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dName != null and dName != ''">d_name,</if>
+            <if test="scheduleId != null">schedule_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="currentTime != null">current_time,</if>
+            <if test="dPeople != null and dPeople != ''">d_people,</if>
+            <if test="dState != null">d_state,</if>
+            <if test="dAttachment != null">d_attachment,</if>
+            <if test="dComment != null">d_comment,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dName != null and dName != ''">#{dName},</if>
+            <if test="scheduleId != null">#{scheduleId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="currentTime != null">#{currentTime},</if>
+            <if test="dPeople != null and dPeople != ''">#{dPeople},</if>
+            <if test="dState != null">#{dState},</if>
+            <if test="dAttachment != null">#{dAttachment},</if>
+            <if test="dComment != null">#{dComment},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaUserDuty" parameterType="OaUserDuty">
+        update oa_user_duty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dName != null and dName != ''">d_name = #{dName},</if>
+            <if test="scheduleId != null">schedule_id = #{scheduleId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="currentTime != null">current_time = #{currentTime},</if>
+            <if test="dPeople != null and dPeople != ''">d_people = #{dPeople},</if>
+            <if test="dState != null">d_state = #{dState},</if>
+            <if test="dAttachment != null">d_attachment = #{dAttachment},</if>
+            <if test="dComment != null">d_comment = #{dComment},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where d_id = #{dId}
+    </update>
+
+    <delete id="deleteOaUserDutyByDId" parameterType="Long">
+        delete from oa_user_duty where d_id = #{dId}
+    </delete>
+
+    <delete id="deleteOaUserDutyByDIds" parameterType="String">
+        delete from oa_user_duty where d_id in 
+        <foreach item="dId" collection="array" open="(" separator="," close=")">
+            #{dId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.synergy.mapper.OaUsageMapper">
+    
+    <resultMap type="OaUsage" id="OaUsageResult">
+        <result property="usageId"    column="usage_id"    />
+        <result property="blockId"    column="block_id"    />
+        <result property="usageState"    column="usage_state"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectOaUsageVo">
+        select usage_id, block_id, usage_state, del_flag, created_by, created_time, updated_by, updated_time from oa_usage
+    </sql>
+
+    <select id="selectOaUsageList" parameterType="OaUsage" resultMap="OaUsageResult">
+        <include refid="selectOaUsageVo"/>
+        <where>  
+            <if test="blockId != null "> and block_id = #{blockId}</if>
+            <if test="usageState != null "> and usage_state = #{usageState}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaUsageByUsageId" parameterType="Long" resultMap="OaUsageResult">
+        <include refid="selectOaUsageVo"/>
+        where usage_id = #{usageId}
+    </select>
+        
+    <insert id="insertOaUsage" parameterType="OaUsage" useGeneratedKeys="true" keyProperty="usageId">
+        insert into oa_usage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blockId != null">block_id,</if>
+            <if test="usageState != null">usage_state,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blockId != null">#{blockId},</if>
+            <if test="usageState != null">#{usageState},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaUsage" parameterType="OaUsage">
+        update oa_usage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="blockId != null">block_id = #{blockId},</if>
+            <if test="usageState != null">usage_state = #{usageState},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where usage_id = #{usageId}
+    </update>
+
+    <delete id="deleteOaUsageByUsageId" parameterType="Long">
+        delete from oa_usage where usage_id = #{usageId}
+    </delete>
+
+    <delete id="deleteOaUsageByUsageIds" parameterType="String">
+        delete from oa_usage where usage_id in 
+        <foreach item="usageId" collection="array" open="(" separator="," close=")">
+            #{usageId}
+        </foreach>
+    </delete>
+
+</mapper>

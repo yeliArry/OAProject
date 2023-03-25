@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.synergy.mapper.OaUserScheduleMapper">
+    
+    <resultMap type="OaUserSchedule" id="OaUserScheduleResult">
+        <result property="sId"    column="s_id"    />
+        <result property="sName"    column="s_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="approvalState"    column="approval_state"    />
+        <result property="userId"    column="user_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="dAttachment"    column="d_attachment"    />
+        <result property="dComment"    column="d_comment"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectOaUserScheduleVo">
+        select s_id, s_name, dept_id, create_time, approval_state, user_id, shift_id, d_attachment, d_comment, del_flag, created_by, created_time, updated_by, updated_time from oa_user_schedule
+    </sql>
+
+    <select id="selectOaUserScheduleList" parameterType="OaUserSchedule" resultMap="OaUserScheduleResult">
+        <include refid="selectOaUserScheduleVo"/>
+        <where>  
+            <if test="sName != null  and sName != ''"> and s_name like concat('%', #{sName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="approvalState != null "> and approval_state = #{approvalState}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="shiftId != null "> and shift_id = #{shiftId}</if>
+            <if test="dAttachment != null  and dAttachment != ''"> and d_attachment = #{dAttachment}</if>
+            <if test="dComment != null  and dComment != ''"> and d_comment = #{dComment}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaUserScheduleBySId" parameterType="Long" resultMap="OaUserScheduleResult">
+        <include refid="selectOaUserScheduleVo"/>
+        where s_id = #{sId}
+    </select>
+        
+    <insert id="insertOaUserSchedule" parameterType="OaUserSchedule" useGeneratedKeys="true" keyProperty="sId">
+        insert into oa_user_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sName != null and sName != ''">s_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="approvalState != null">approval_state,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="shiftId != null">shift_id,</if>
+            <if test="dAttachment != null">d_attachment,</if>
+            <if test="dComment != null">d_comment,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sName != null and sName != ''">#{sName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="approvalState != null">#{approvalState},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="shiftId != null">#{shiftId},</if>
+            <if test="dAttachment != null">#{dAttachment},</if>
+            <if test="dComment != null">#{dComment},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaUserSchedule" parameterType="OaUserSchedule">
+        update oa_user_schedule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sName != null and sName != ''">s_name = #{sName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="approvalState != null">approval_state = #{approvalState},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
+            <if test="dAttachment != null">d_attachment = #{dAttachment},</if>
+            <if test="dComment != null">d_comment = #{dComment},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where s_id = #{sId}
+    </update>
+
+    <delete id="deleteOaUserScheduleBySId" parameterType="Long">
+        delete from oa_user_schedule where s_id = #{sId}
+    </delete>
+
+    <delete id="deleteOaUserScheduleBySIds" parameterType="String">
+        delete from oa_user_schedule where s_id in 
+        <foreach item="sId" collection="array" open="(" separator="," close=")">
+            #{sId}
+        </foreach>
+    </delete>
+
+</mapper>

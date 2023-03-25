@@ -71,7 +71,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-synergy</artifactId>
+            <version>4.7.6</version>
+        </dependency>
     </dependencies>
 
     <build>
