@@ -5,8 +5,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.synergy.mapper.OaUserScheduleMapper">
     
     <resultMap type="OaUserSchedule" id="OaUserScheduleResult">
-        <result property="sId"    column="s_id"    />
-        <result property="sName"    column="s_name"    />
+        <id property="scheduleId"    column="s_Id"    />
+        <result property="scheduleName"    column="s_Name"    />
         <result property="deptId"    column="dept_id"    />
         <result property="createTime"    column="create_time"    />
         <result property="approvalState"    column="approval_state"    />
@@ -19,26 +19,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createdTime"    column="created_time"    />
         <result property="updatedBy"    column="updated_by"    />
         <result property="updatedTime"    column="updated_time"    />
+
+        <association property="sysUser" javaType="SysUser">
+            <id property="userId" column="user_Id"/>
+            <result property="userName" column="user_Name"/>
+        </association>
+        <association property="dept" javaType="SysDept">
+            <id property="depId" column="dep_Id"/>
+            <result property="deptName" column="dept_Name"/>
+        </association>
     </resultMap>
 
+
     <sql id="selectOaUserScheduleVo">
-        select s_id, s_name, dept_id, create_time, approval_state, user_id, shift_id, d_attachment, d_comment, del_flag, created_by, created_time, updated_by, updated_time from oa_user_schedule
+        select s_id, s_name, dept_id , create_time, approval_state,
+              user_id ,
+               shift_id, d_attachment, d_comment, del_flag, created_by,
+               created_time, updated_by, updated_time from oa_user_schedule
     </sql>
 
-    <select id="selectOaUserScheduleList" parameterType="OaUserSchedule" resultMap="OaUserScheduleResult">
-        <include refid="selectOaUserScheduleVo"/>
-        <where>  
-            <if test="sName != null  and sName != ''"> and s_name like concat('%', #{sName}, '%')</if>
+    <sql id="OaUser">
+        select u.s_id,
+               u.s_name,
+               u.dept_id as did,
+               sd.dept_id,
+               sd.dept_name,
+               u.create_time,
+               u.approval_state,
+               u.user_id ,
+               su.user_id,
+               su.user_name,
+               u.shift_id,
+               u.d_attachment,
+               u.d_comment,
+               u.del_flag,
+               u.created_by,
+               u.created_time,
+               u.updated_by,
+               u.updated_time
+        from oa_user_schedule u
+                 left join sys_user su on u.user_id = su.user_id
+                 left join sys_dept sd on u.dept_id = sd.dept_id
+
+    </sql>
+
+    <select id="query" parameterType="OaUserSchedule" resultMap="OaUserScheduleResult">
+        <include refid="OaUser"/>
+        <where>
+            <if test="scheduleName != null  and scheduleName != ''"> and s_name like concat('%', #{scheduleName}, '%')</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
             <if test="approvalState != null "> and approval_state = #{approvalState}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="shiftId != null "> and shift_id = #{shiftId}</if>
-            <if test="dAttachment != null  and dAttachment != ''"> and d_attachment = #{dAttachment}</if>
-            <if test="dComment != null  and dComment != ''"> and d_comment = #{dComment}</if>
-            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
-            <if test="createdTime != null "> and created_time = #{createdTime}</if>
-            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
-            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+
         </where>
     </select>
     

@@ -12,7 +12,7 @@
                     <ul>
                         <li>
                             <label>排班名称：</label>
-                            <input name="sName" type="text"/>
+                            <input name="scheduleName" type="text"/>
                         </li>
                         <li>
                             <label>部门id：</label>
@@ -59,7 +59,7 @@
 
     $(function () {
         var options = {
-            url: prefix + "/list",
+            url: prefix + "/query",
             createUrl: prefix + "/add",
             updateUrl: prefix + "/edit/{id}",
             removeUrl: prefix + "/remove",
@@ -69,20 +69,19 @@
                 checkbox: true
             },
                 {
-                    field: 'sId',
-                    title: '编号',
-                    // visible: false
+                    field: 'scheduleId',
+                    title: '编号'
                 },
                 {
-                    field: 'sName',
+                    field: 'scheduleName',
                     title: '排班名称'
                 },
                 {
-                    field: 'deptId',
-                    title: '部门id'
+                    field: 'dept.deptName',
+                    title: '部门'
                 },
                 {
-                    field: 'userId',
+                    field: 'sysUser.userName',
                     title: '创建人'
                 },
                 {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.synergy.domain.OaUserSchedule;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 排班Mapper接口
@@ -61,4 +62,11 @@ public interface OaUserScheduleMapper
      * @return 结果
      */
     public int deleteOaUserScheduleBySIds(String[] sIds);
+
+    /**
+     * 查询全部
+     * @param oaUserSchedule 后面需要的查询条件
+     * @return
+     */
+    List<OaUserSchedule> query(OaUserSchedule oaUserSchedule);
 }

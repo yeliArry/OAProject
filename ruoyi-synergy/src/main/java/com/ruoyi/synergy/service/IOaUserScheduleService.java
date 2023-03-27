@@ -58,4 +58,12 @@ public interface IOaUserScheduleService
      * @return 结果
      */
     public int deleteOaUserScheduleBySId(Long sId);
+
+    /**
+     * 查询全部
+     * @param oaUserSchedule 后面需要的查询条件
+     * @return
+     */
+    List<OaUserSchedule> query(OaUserSchedule oaUserSchedule);
+
 }

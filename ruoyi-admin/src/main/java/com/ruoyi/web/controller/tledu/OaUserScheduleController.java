@@ -9,11 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.core.controller.BaseController;
@@ -54,7 +50,15 @@ public class OaUserScheduleController extends BaseController
         List<OaUserSchedule> list = oaUserScheduleService.selectOaUserScheduleList(oaUserSchedule);
         return getDataTable(list);
     }
-
+    @RequiresPermissions("system:schedule:query")
+    @RequestMapping("/query")
+    @ResponseBody
+public TableDataInfo query(OaUserSchedule oaUserSchedule){
+        startPage();
+        List<OaUserSchedule> list1=oaUserScheduleService.query(oaUserSchedule);
+        System.out.println(list1.toString());
+        return getDataTable(list1);
+}
     /**
      * 导出排班列表
      */
@@ -125,4 +129,6 @@ public class OaUserScheduleController extends BaseController
     {
         return toAjax(oaUserScheduleService.deleteOaUserScheduleBySIds(ids));
     }
+
+
 }

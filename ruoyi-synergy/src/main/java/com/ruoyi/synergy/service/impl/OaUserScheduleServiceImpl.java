@@ -93,4 +93,9 @@ public class OaUserScheduleServiceImpl implements IOaUserScheduleService
     {
         return oaUserScheduleMapper.deleteOaUserScheduleBySId(sId);
     }
+
+    @Override
+    public List<OaUserSchedule> query(OaUserSchedule oaUserSchedule) {
+        return oaUserScheduleMapper.query(oaUserSchedule);
+    }
 }
