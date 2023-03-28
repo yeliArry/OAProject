@@ -55,6 +55,7 @@ public class OaUserScheduleServiceImpl implements IOaUserScheduleService
     public int insertOaUserSchedule(OaUserSchedule oaUserSchedule)
     {
         oaUserSchedule.setCreateTime(DateUtils.getNowDate());
+
         return oaUserScheduleMapper.insertOaUserSchedule(oaUserSchedule);
     }
 

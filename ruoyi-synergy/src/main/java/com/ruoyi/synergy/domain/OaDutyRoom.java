@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OaDutyRoom {
 
-  private long shiftId;
+  private Long shiftId;
   private java.sql.Timestamp shiftDate;
-  private long userId;
-  private long delFlag;
-  private long createdBy;
+  private Long userId;
+  private Long delFlag;
+  private Long createdBy;
   private java.sql.Timestamp createdTime;
-  private long updatedBy;
+  private Long updatedBy;
   private java.sql.Timestamp updatedTime;
 
 }

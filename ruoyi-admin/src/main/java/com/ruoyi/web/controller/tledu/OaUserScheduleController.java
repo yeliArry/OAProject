@@ -1,13 +1,19 @@
 package com.ruoyi.web.controller.tledu;
 
 import java.util.List;
-
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.synergy.domain.OaDutyRoom;
 import com.ruoyi.synergy.domain.OaUserSchedule;
 import com.ruoyi.synergy.service.IOaUserScheduleService;
+import com.ruoyi.synergy.service.OaDutyRoomService;
+import com.ruoyi.system.service.ISysUserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
@@ -18,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 排班Controller
- * 
+ *
  * @author ruoyi
  * @date 2023-03-25
  */
@@ -30,6 +36,11 @@ public class OaUserScheduleController extends BaseController
 
     @Autowired
     private IOaUserScheduleService oaUserScheduleService;
+    @Autowired
+    private ISysUserService userService;
+
+    @Autowired
+    private OaDutyRoomService oaDutyRoomService;
 
     @RequiresPermissions("system:schedule:view")
     @GetMapping()
@@ -56,7 +67,6 @@ public class OaUserScheduleController extends BaseController
 public TableDataInfo query(OaUserSchedule oaUserSchedule){
         startPage();
         List<OaUserSchedule> list1=oaUserScheduleService.query(oaUserSchedule);
-        System.out.println(list1.toString());
         return getDataTable(list1);
 }
     /**
@@ -77,10 +87,18 @@ public TableDataInfo query(OaUserSchedule oaUserSchedule){
      * 新增排班
      */
     @GetMapping("/add")
-    public String add()
+    public String add(Model model)
     {
+        List<SysUser> list = userService.selectUserList(new SysUser());
+        model.addAttribute("list",list);
+        String loginName = ShiroUtils.getLoginName();
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("user",user);
+        model.addAttribute("loginName",loginName);
+
         return prefix + "/add";
     }
+
 
     /**
      * 新增保存排班
@@ -89,12 +107,12 @@ public TableDataInfo query(OaUserSchedule oaUserSchedule){
     @Log(title = "排班", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(OaUserSchedule oaUserSchedule)
+    public AjaxResult addSave(OaUserSchedule oaUserSchedule,OaDutyRoom oaDutyRoom)
     {
         return toAjax(oaUserScheduleService.insertOaUserSchedule(oaUserSchedule));
     }
 
-    /**
+    /**   wsafWECASDFDSFGWSERGWHJRYKJL"iP   QRQ 23RYJY6Jdqdwfgqe4ghiyh,luyieqag
      * 修改排班
      */
     @RequiresPermissions("system:schedule:edit")

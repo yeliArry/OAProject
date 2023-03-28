@@ -1,6 +1,8 @@
 package com.ruoyi.synergy.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -14,7 +16,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 排班对象 oa_user_schedule
- * 
+ *
  * @author ruoyi
  * @date 2023-03-25
  */
@@ -49,9 +51,7 @@ private SysDept dept;
 
     /** 7天值班人员 */
     @Excel(name = "7天值班人员")
-    private Long shiftId;
-    private OaDutyRoom oaDutyRoom;
-
+    private List<OaDutyRoom> oaDutyRo;
     /** 附件 */
     @Excel(name = "附件")
     private String dAttachment;
@@ -110,8 +110,6 @@ private SysDept dept;
                 ", approvalState=" + approvalState +
                 ", userId=" + userId +
                 ", sysUser=" + sysUser +
-                ", shiftId=" + shiftId +
-                ", oaDutyRoom=" + oaDutyRoom +
                 ", dAttachment='" + dAttachment + '\'' +
                 ", dComment='" + dComment + '\'' +
                 ", delFlag='" + delFlag + '\'' +

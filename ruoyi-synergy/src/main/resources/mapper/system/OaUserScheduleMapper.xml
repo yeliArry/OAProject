@@ -28,6 +28,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <id property="depId" column="dep_Id"/>
             <result property="deptName" column="dept_Name"/>
         </association>
+        <association property="oaDutyRoom" javaType="OaDutyRoom">
+            <id property="shiftId" column="shift_id"/>
+            <result property="shiftDate" column="shift_Date"/>
+            <result property="userId" column="user_id"/>
+        </association>
     </resultMap>
 
 
@@ -49,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                u.user_id ,
                su.user_id,
                su.user_name,
-               u.shift_id,
+               u.shift_id as usId,
                u.d_attachment,
                u.d_comment,
                u.del_flag,
@@ -60,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from oa_user_schedule u
                  left join sys_user su on u.user_id = su.user_id
                  left join sys_dept sd on u.dept_id = sd.dept_id
+                left join oa_duty_room odr on u.shift_id = odr.shift_id
 
     </sql>
 
@@ -78,15 +84,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where s_id = #{sId}
     </select>
         
-    <insert id="insertOaUserSchedule" parameterType="OaUserSchedule" useGeneratedKeys="true" keyProperty="sId">
+    <insert id="insertOaUserSchedule" parameterType="OaUserSchedule" useGeneratedKeys="true" keyProperty="scheduleId">
         insert into oa_user_schedule
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="sName != null and sName != ''">s_name,</if>
-            <if test="deptId != null">dept_id,</if>
+            <if test="scheduleName != null and scheduleName != ''">s_name,</if>
+            <if test="deptId != null and deptId!=0">dept_id,</if>
             <if test="createTime != null">create_time,</if>
-            <if test="approvalState != null">approval_state,</if>
-            <if test="userId != null">user_id,</if>
-            <if test="shiftId != null">shift_id,</if>
+            <if test="approvalState != 0">approval_state,</if>
+            <if test="userId != 0">user_id,</if>
+            <if test="shift_Id != 0">shift_id,</if>
             <if test="dAttachment != null">d_attachment,</if>
             <if test="dComment != null">d_comment,</if>
             <if test="delFlag != null">del_flag,</if>
@@ -96,12 +102,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updatedTime != null">updated_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="sName != null and sName != ''">#{sName},</if>
-            <if test="deptId != null">#{deptId},</if>
+            <if test="scheduleName != null and scheduleName != ''">#{scheduleName},</if>
+            <if test="deptId != null and deptId!=0">#{deptId},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="approvalState != null">#{approvalState},</if>
-            <if test="userId != null">#{userId},</if>
-            <if test="shiftId != null">#{shiftId},</if>
+            <if test="approvalState != 0">#{approvalState},</if>
+            <if test="userId != 0">#{userId},</if>
+            <if test="shiftId != 0">#{shiftId},</if>
             <if test="dAttachment != null">#{dAttachment},</if>
             <if test="dComment != null">#{dComment},</if>
             <if test="delFlag != null">#{delFlag},</if>
@@ -120,7 +126,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="approvalState != null">approval_state = #{approvalState},</if>
             <if test="userId != null">user_id = #{userId},</if>
-            <if test="shiftId != null">shift_id = #{shiftId},</if>
             <if test="dAttachment != null">d_attachment = #{dAttachment},</if>
             <if test="dComment != null">d_comment = #{dComment},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>

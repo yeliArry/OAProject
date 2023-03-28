@@ -1,99 +1,144 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('主子表提交')" />
-    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: header('主子表提交')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
     <style type="text/css">
-        table label.error{position: inherit;}select + label.error{z-index:1;right:40px;}
+        table label.error {
+            position: inherit;
+        }
+
+        select + label.error {
+            z-index: 1;
+            right: 40px;
+        }
     </style>
 </head>
 <body class="gray-bg">
 <div class="main-content">
-    <form id="form-add" class="form-horizontal">
+    <form class="form-horizontal" id="form-add">
         <h4 class="form-header h4">排期信息</h4>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">编号：</label>
                     <div class="col-sm-8">
-                        <input name="name"  class="form-control" type="text" maxlength="30" required>
+                        <input class="form-control" maxlength="30" name="userId" required type="text" value="">
                     </div>
                 </div>
             </div>
+            <script>
+                var num = "";   //定义用户编号
+                    num += Math.floor(Math.random() * 10000000);
+               document.querySelector('.form-control').value = num
+            </script>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">名称：</label>
+                        <label class="col-sm-4 control-label is-required">排班名称：</label>
                         <div class="col-sm-8">
-                            <input name="name"  class="form-control" type="text" maxlength="30" required>
-                        </div>
-                    </div>
-                </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">创建人：</label>
-                    <div class="col-sm-8">
-                        <input id="phonenumber" name="phonenumber"  class="form-control isPhone" type="text" maxlength="11">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label is-required">创建时间：</label>
-                    <div class="col-sm-8">
-                        <div class="input-group date">
-                            <input name="birthday" class="form-control" placeholder="yyyy-MM-dd" type="text">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">审批状态：</label>
-                        <div class="col-sm-8">
-                            <input name="name"  class="form-control" type="text" maxlength="30" value="1" required>
+                            <input class="form-control" maxlength="30" name="scheduleName" required type="text">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label is-required">流程名称：</label>
+                            <label class="col-sm-4 control-label">创建人：</label>
                             <div class="col-sm-8">
-                                <input name="name"  class="form-control" type="text" maxlength="30"  value="排班信息" required>
+                                <input class="form-control " readonly id="userName" name="userName"  type="text" th:value="${loginName}">
                             </div>
                         </div>
                     </div>
-        <h4 class="form-header h4">排期</h4>
-        <div class="row" style="width: 820px">
-            <div class="col-sm-12" style="margin-left: 70px">
-                <button type="button" class="btn btn-white btn-sm" onclick="addRow()"><i class="fa fa-plus"> 增加</i></button>
-                <button type="button" class="btn btn-white btn-sm" onclick="sub.delRow()"><i class="fa fa-minus"> 删除</i></button>
-                <div class="col-sm-12 select-table table-striped">
-                    <table id="bootstrap-table"></table>
+                    <div class="col-sm-6" hidden >
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">部门：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control " readonly id="deptId" name="deptId" th:value="${user.getDeptId()}" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">创建时间：</label>
+                            <div class="col-sm-8">
+                                <div class="input-group date">
+                                    <input class="form-control" name="createTime" placeholder="yyyy-MM-dd" type="text">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">审批状态：</label>
+                                <div class="col-sm-8">
+<!--                                    <input class="form-control" readonly maxlength="30" name="approvalState"-->
+<!--                                           required type="text" value="已同意">-->
+                                    <select name="approvalState" id="approvalState">
+                                        <option value="1">已同意</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">流程名称：</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" readonly maxlength="30" name="name" required
+                                               type="text" value="排班信息">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">备注：</label>
+                                <div class="col-xs-10">
+                                    <textarea name="dComment" maxlength="500" class="form-control valid" rows="3" style="width: 266px; height: 56px;"></textarea>
+                                </div>
+                                <div class="fileinput fileinput-new" data-provides="fileinput" style="width: 311px;margin-left: 500px;">
+                                    <span class="btn btn-white btn-file" style="position: relative;top: -56px;"><span class="fileinput-new" >选择文件</span><span class="fileinput-exists">更改</span><input type="hidden" value="" name="dAttachment"><input type="file" name="dAttachment"></span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none;position: relative;top: -52px;">×</a>
+                                </div>
+                            </div>
+
+                            <h4 class="form-header h4" style="margin-top: -75px;margin-left: 80px;">排期</h4>
+                            <div class="row" style="width: 820px">
+                                <div class="col-sm-12" style="margin-left: 70px">
+                                    <button class="btn btn-white btn-sm" onclick="addRow()" type="button"><i
+                                            class="fa fa-plus"> 增加</i></button>
+                                    <button class="btn btn-white btn-sm" onclick="sub.delRow()" type="button"><i
+                                            class="fa fa-minus"> 删除</i></button>
+                                    <div class="col-sm-12 select-table table-striped">
+                                        <table id="bootstrap-table"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                            <div class="row">
+                                <div class="col-sm-offset-5 col-sm-10">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+                                </div>
+                            </div>
                 </div>
             </div>
         </div>
     </form>
 </div>
-<th:block th:include="include :: footer" />
-<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
 <script th:src="@{/js/jquery.tmpl.js}"></script>
 <script th:inline="javascript">
-    $(function() {
+    $(function () {
         // 初始化数据, 可以由后台传过来
-        var data = [
-            {
-                id: "100",
-                name: "名称",
-                weight: "100",
-                price: "12.5",
-                date: "2021-02-01",
-                type: "1",
-            }];
+
+        var data = [];
         var options = {
             data: data,
             pagination: false,
@@ -119,7 +164,7 @@
                     field: 'date',
                     align: 'center',
                     title: '日期',
-                    formatter: function(value, row, index) {
+                    formatter: function (value, row, index) {
                         var html = $.common.sprintf("<input class='form-control' type='text' name='goods[%s].date' value='%s' placeholder='yyyy-MM-dd' style='width: 200px'>", index, value);
                         return html;
                     }
@@ -128,36 +173,32 @@
                     field: 'type',
                     align: 'center',
                     title: '操作人',
-                    formatter: function(value, row, index) {
-                        var data = [{ index: index, type: value }];
+                    formatter: function (value, row, index) {
+                        var data = [{index: index, type: value}];
                         return $("#goodsTypeTpl").tmpl(data).html();
                     }
-                }]
+                },]
         };
         $.table.init(options);
     });
 
-    $.validator.addMethod("goodsName", function(value, element) {
+    $.validator.addMethod("goodsName", function (value, element) {
         return !this.optional(element);
     }, "名称必填。");
-    //
-    // $.validator.addMethod("goodsWeight", function(value, element) {
-    //     return !this.optional(element) && (value <= 100 && value >= 0);
-    // }, "商品重量长度区间0-100。");
 
     /* 主子表-提交 */
-    function submitHandler(index, layero){
-        if ($.validate.form()) {
-            var data = $("#form-add").serializeArray();
-            alert(JSON.stringify(data))
-            $.operate.saveModal("/demo/operate/customer/add", data);
-        }
+    function submitHandler(index) {
+        var data = $("#form-add").serializeArray();
+        alert(JSON.stringify(data))
+        $.operate.saveModal("/system/schedule/add", data);
     }
 
-    $("input[name='birthday']").datetimepicker({
+
+    $("input[name='createTime']").datetimepicker({
         format: "yyyy-mm-dd",
         minView: "month",
-        autoclose: true
+        autoclose: true,
+        startDate: new Date()
     });
 
     function addRow() {
@@ -178,20 +219,26 @@
             format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true,
-            pickerPosition:'top-right'
+            pickerPosition: 'top-right',
+            startDate: new Date()
         });
     });
+
 </script>
+
 </body>
 </html>
 
-<!-- 商品类型 -->
+<!-- 操作人 -->
 <script id="goodsTypeTpl" type="text/x-jquery-tmpl">
-<div>
-<select class='form-control' name='goods[${index}].type'>
-    <option value="">所有</option>
-    <option value="0" {{if type==="0"}}selected{{/if}}>寒性</option>
-    <option value="1" {{if type==="1"}}selected{{/if}}>热性</option>
-</select>
-</div>
+    <div>
+        <select name='goods[${index}].name' class="form-control" >
+            <option
+                th:each="cooperationPlatformDO : ${list}" th:selected="${cooperationPlatformDO.userName}"
+                th:value="${cooperationPlatformDO.userId}"
+                th:text="${cooperationPlatformDO.userName}">
+            </option>
+        </select>
+    </div>
+
 </script>

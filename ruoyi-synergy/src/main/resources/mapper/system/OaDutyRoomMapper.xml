@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.synergy.mapper.OaDutyRoomMapper">
+
+    <resultMap type="OaDutyRoom" id="OaDutyRoomQuery">
+        <id property="shiftId"    column="shift_Id"    />
+        <result property="shiftDate"    column="shift_Date"    />
+        <result property="userId"    column="user_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+        <association property="sysUser" javaType="SysUser">
+            <id property="userId" column="user_Id"/>
+            <result property="userName" column="user_Name"/>
+        </association>
+    </resultMap>
+
+    <select id="query" resultType="OaDutyRoom">
+        select d.shift_Id,
+               d.shift_Date,
+               d.user_id ,
+               su.user_id,
+               su.user_name,
+               d.shift_id,
+               d.del_flag,
+               d.created_by,
+               d.created_time,
+               d.updated_by,
+               d.updated_time
+        from oa_duty_room d
+                 left join sys_user su on d.user_id = su.user_id
+
+    </select>
+
+
+    <insert id="insertOaUserSchedule" parameterType="OaUserSchedule" useGeneratedKeys="true" keyProperty="shiftId">
+        insert into oa_duty_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shiftId != 0">shift_Id,</if>
+            <if test="shiftDate != null">shift_Date,</if>
+            <if test="userId != 0">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shiftId != 0">#{shift_Id},</if>
+            <if test="shiftDate != null">#{shift_Date},</if>
+            <if test="userId != 0">#{user_id},</if>
+         </trim>
+    </insert>
+
+</mapper>
