@@ -5,8 +5,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.synergy.mapper.OaUserScheduleMapper">
     
     <resultMap type="OaUserSchedule" id="OaUserScheduleResult">
-        <id property="scheduleId"    column="s_Id"    />
-        <result property="scheduleName"    column="s_Name"    />
+        <result property="scheduleId"    column="s_id"    />
+        <result property="scheduleName"    column="s_name"    />
         <result property="deptId"    column="dept_id"    />
         <result property="createTime"    column="create_time"    />
         <result property="approvalState"    column="approval_state"    />
@@ -19,7 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createdTime"    column="created_time"    />
         <result property="updatedBy"    column="updated_by"    />
         <result property="updatedTime"    column="updated_time"    />
-
         <association property="sysUser" javaType="SysUser">
             <id property="userId" column="user_Id"/>
             <result property="userName" column="user_Name"/>
@@ -28,22 +27,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <id property="depId" column="dep_Id"/>
             <result property="deptName" column="dept_Name"/>
         </association>
-        <association property="oaDutyRoom" javaType="OaDutyRoom">
-            <id property="shiftId" column="shift_id"/>
-            <result property="shiftDate" column="shift_Date"/>
-            <result property="userId" column="user_id"/>
-        </association>
+
+    </resultMap>
+
+    <resultMap id="OaUserScheduleOaDutyRoomResult" type="OaUserSchedule" extends="OaUserScheduleResult">
+        <collection property="oaDutyRoomList" notNullColumn="sub_shift_id" javaType="java.util.List" resultMap="OaDutyRoomResult" />
     </resultMap>
 
 
-    <sql id="selectOaUserScheduleVo">
-        select s_id, s_name, dept_id , create_time, approval_state,
-              user_id ,
-               shift_id, d_attachment, d_comment, del_flag, created_by,
-               created_time, updated_by, updated_time from oa_user_schedule
-    </sql>
+    <resultMap type="OaDutyRoom" id="OaDutyRoomResult">
+        <result property="shiftId"    column="sub_shift_id"    />
+        <result property="shiftDate"    column="sub_shift_date"    />
+        <result property="userId"    column="sub_user_id"    />
+        <result property="delFlag"    column="sub_del_flag"    />
+        <result property="createdBy"    column="sub_created_by"    />
+        <result property="createdTime"    column="sub_created_time"    />
+        <result property="updatedBy"    column="sub_updated_by"    />
+        <result property="updatedTime"    column="sub_updated_time"    />
+    </resultMap>
 
-    <sql id="OaUser">
+    <sql id="selectOaUserScheduleVo">
         select u.s_id,
                u.s_name,
                u.dept_id as did,
@@ -65,23 +68,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from oa_user_schedule u
                  left join sys_user su on u.user_id = su.user_id
                  left join sys_dept sd on u.dept_id = sd.dept_id
-                left join oa_duty_room odr on u.shift_id = odr.shift_id
 
     </sql>
 
-    <select id="query" parameterType="OaUserSchedule" resultMap="OaUserScheduleResult">
-        <include refid="OaUser"/>
-        <where>
+    <select id="selectOaUserScheduleList" parameterType="OaUserSchedule" resultMap="OaUserScheduleResult">
+        <include refid="selectOaUserScheduleVo"/>
+        <where>  
             <if test="scheduleName != null  and scheduleName != ''"> and s_name like concat('%', #{scheduleName}, '%')</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
             <if test="approvalState != null "> and approval_state = #{approvalState}</if>
-
         </where>
     </select>
     
     <select id="selectOaUserScheduleBySId" parameterType="Long" resultMap="OaUserScheduleResult">
-        <include refid="selectOaUserScheduleVo"/>
-        where s_id = #{sId}
+        select a.s_id, a.s_name, a.dept_id, a.create_time, a.approval_state, a.user_id, a.shift_id, a.d_attachment, a.d_comment, a.del_flag, a.created_by, a.created_time, a.updated_by, a.updated_time,
+ b.shift_id as sub_shift_id, b.shift_date as sub_shift_date, b.user_id as sub_user_id, b.del_flag as sub_del_flag, b.created_by as sub_created_by, b.created_time as sub_created_time, b.updated_by as sub_updated_by, b.updated_time as sub_updated_time
+        from oa_user_schedule a
+        left join oa_duty_room b on b.shift_id = a.s_id
+        where a.s_id = #{scheduleId}
     </select>
         
     <insert id="insertOaUserSchedule" parameterType="OaUserSchedule" useGeneratedKeys="true" keyProperty="scheduleId">
@@ -90,9 +94,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="scheduleName != null and scheduleName != ''">s_name,</if>
             <if test="deptId != null and deptId!=0">dept_id,</if>
             <if test="createTime != null">create_time,</if>
-            <if test="approvalState != 0">approval_state,</if>
+            <if test="approvalState != null">approval_state,</if>
             <if test="userId != 0">user_id,</if>
-            <if test="shift_Id != 0">shift_id,</if>
+            <if test="shiftId != null">shift_id,</if>
             <if test="dAttachment != null">d_attachment,</if>
             <if test="dComment != null">d_comment,</if>
             <if test="delFlag != null">del_flag,</if>
@@ -105,9 +109,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="scheduleName != null and scheduleName != ''">#{scheduleName},</if>
             <if test="deptId != null and deptId!=0">#{deptId},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="approvalState != 0">#{approvalState},</if>
+            <if test="approvalState != null">#{approvalState},</if>
             <if test="userId != 0">#{userId},</if>
-            <if test="shiftId != 0">#{shiftId},</if>
+            <if test="shiftId != null">#{shiftId},</if>
             <if test="dAttachment != null">#{dAttachment},</if>
             <if test="dComment != null">#{dComment},</if>
             <if test="delFlag != null">#{delFlag},</if>
@@ -121,11 +125,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateOaUserSchedule" parameterType="OaUserSchedule">
         update oa_user_schedule
         <trim prefix="SET" suffixOverrides=",">
-            <if test="sName != null and sName != ''">s_name = #{sName},</if>
+            <if test="scheduleName != null and scheduleName != ''">s_name = #{scheduleName},</if>
             <if test="deptId != null">dept_id = #{deptId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="approvalState != null">approval_state = #{approvalState},</if>
             <if test="userId != null">user_id = #{userId},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
             <if test="dAttachment != null">d_attachment = #{dAttachment},</if>
             <if test="dComment != null">d_comment = #{dComment},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
@@ -134,18 +139,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updatedBy != null">updated_by = #{updatedBy},</if>
             <if test="updatedTime != null">updated_time = #{updatedTime},</if>
         </trim>
-        where s_id = #{sId}
+        where s_id = #{scheduleId}
     </update>
 
-    <delete id="deleteOaUserScheduleBySId" parameterType="Long">
-        delete from oa_user_schedule where s_id = #{sId}
+    <delete id="deleteOaUserScheduleBysId" parameterType="Long">
+        delete from oa_user_schedule where s_id = #{scheduleId}
     </delete>
 
-    <delete id="deleteOaUserScheduleBySIds" parameterType="String">
+    <delete id="deleteOaUserScheduleBysIds" parameterType="String">
         delete from oa_user_schedule where s_id in 
-        <foreach item="sId" collection="array" open="(" separator="," close=")">
-            #{sId}
+        <foreach item="scheduleId" collection="array" open="(" separator="," close=")">
+            #{scheduleId}
         </foreach>
     </delete>
+    
+    <delete id="deleteOaDutyRoomByShiftIds" parameterType="String">
+        delete from oa_duty_room where shift_id in 
+        <foreach item="shiftId" collection="array" open="(" separator="," close=")">
+            #{shiftId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOaDutyRoomByShiftId" parameterType="Long">
+        delete from oa_duty_room where shift_id = #{shiftId}
+    </delete>
+
+    <insert id="batchOaDutyRoom">
+        insert into oa_duty_room( shift_id, shift_date, user_id, del_flag, created_by, created_time, updated_by, updated_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.shiftId}, #{item.shiftDate}, #{item.userId}, #{item.delFlag}, #{item.createdBy}, #{item.createdTime}, #{item.updatedBy}, #{item.updatedTime})
+        </foreach>
+    </insert>
 
 </mapper>

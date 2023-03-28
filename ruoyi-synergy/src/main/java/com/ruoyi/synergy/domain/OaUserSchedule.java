@@ -1,8 +1,7 @@
 package com.ruoyi.synergy.domain;
 
-import java.util.Date;
 import java.util.List;
-
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -16,9 +15,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 排班对象 oa_user_schedule
- *
+ * 
  * @author ruoyi
- * @date 2023-03-25
+ * @date 2023-03-28
  */
 @Data
 @AllArgsConstructor
@@ -37,7 +36,7 @@ public class OaUserSchedule extends BaseEntity
     /** 部门id */
     @Excel(name = "部门id")
     private Long deptId;
-private SysDept dept;
+    private SysDept dept;
 
     /** 审批状态 */
     @Excel(name = "审批状态")
@@ -46,12 +45,11 @@ private SysDept dept;
     /** 创建人 */
     @Excel(name = "创建人")
     private Long userId;
-
     private SysUser sysUser;
-
     /** 7天值班人员 */
     @Excel(name = "7天值班人员")
-    private List<OaDutyRoom> oaDutyRo;
+    private Long shiftId;
+
     /** 附件 */
     @Excel(name = "附件")
     private String dAttachment;
@@ -81,42 +79,23 @@ private SysDept dept;
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-
-
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-//            .append("deptId", getDeptId())
-//            .append("createTime", getCreateTime())
-//            .append("approvalState", getApprovalState())
-//            .append("userId", getUserId())
-//            .append("shiftId", getShiftId())
-//            .append("delFlag", getDelFlag())
-//            .append("createdBy", getCreatedBy())
-//            .append("createdTime", getCreatedTime())
-//            .append("updatedBy", getUpdatedBy())
-//            .append("updatedTime", getUpdatedTime())
-//            .toString();
-//    }
-
+    /** 排班中间信息 */
+    private List<OaDutyRoom> oaDutyRoomList;
 
     @Override
     public String toString() {
-        return "OaUserSchedule{" +
-                "sId=" + scheduleId +
-                ", sName='" + scheduleName + '\'' +
-                ", deptId=" + deptId +
-                ", sysDept=" + dept +
-                ", approvalState=" + approvalState +
-                ", userId=" + userId +
-                ", sysUser=" + sysUser +
-                ", dAttachment='" + dAttachment + '\'' +
-                ", dComment='" + dComment + '\'' +
-                ", delFlag='" + delFlag + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", createdTime=" + createdTime +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", updatedTime=" + updatedTime +
-                '}';
+        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("deptId", getDeptId())
+            .append("createTime", getCreateTime())
+            .append("approvalState", getApprovalState())
+            .append("userId", getUserId())
+            .append("shiftId", getShiftId())
+            .append("delFlag", getDelFlag())
+            .append("createdBy", getCreatedBy())
+            .append("createdTime", getCreatedTime())
+            .append("updatedBy", getUpdatedBy())
+            .append("updatedTime", getUpdatedTime())
+            .append("oaDutyRoomList", getOaDutyRoomList())
+            .toString();
     }
 }

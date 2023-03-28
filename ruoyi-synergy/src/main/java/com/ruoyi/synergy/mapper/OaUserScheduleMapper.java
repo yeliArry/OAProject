@@ -1,27 +1,26 @@
 package com.ruoyi.synergy.mapper;
 
-import java.util.List;
-
+import com.ruoyi.synergy.domain.OaDutyRoom;
 import com.ruoyi.synergy.domain.OaUserSchedule;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 排班Mapper接口
  * 
  * @author ruoyi
- * @date 2023-03-25
+ * @date 2023-03-28
  */
-@Mapper
 public interface OaUserScheduleMapper 
 {
     /**
      * 查询排班
      * 
-     * @param sId 排班主键
+     * @param scheduleId 排班主键
      * @return 排班
      */
-    public OaUserSchedule selectOaUserScheduleBySId(Long sId);
+    public OaUserSchedule selectOaUserScheduleBysId(Long scheduleId);
 
     /**
      * 查询排班列表
@@ -50,23 +49,41 @@ public interface OaUserScheduleMapper
     /**
      * 删除排班
      * 
-     * @param sId 排班主键
+     * @param scheduleId 排班主键
      * @return 结果
      */
-    public int deleteOaUserScheduleBySId(Long sId);
+    public int deleteOaUserScheduleBysId(@Param("scheduleId") Long scheduleId);
 
     /**
      * 批量删除排班
      * 
-     * @param sIds 需要删除的数据主键集合
+     * @param scheduleIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteOaUserScheduleBySIds(String[] sIds);
+    public int deleteOaUserScheduleBysIds(String[] scheduleIds);
 
     /**
-     * 查询全部
-     * @param oaUserSchedule 后面需要的查询条件
-     * @return
+     * 批量删除排班中间
+     * 
+     * @param scheduleIds 需要删除的数据主键集合
+     * @return 结果
      */
-    List<OaUserSchedule> query(OaUserSchedule oaUserSchedule);
+    public int deleteOaDutyRoomByShiftIds(String[] scheduleIds);
+    
+    /**
+     * 批量新增排班中间
+     * 
+     * @param oaDutyRoomList 排班中间列表
+     * @return 结果
+     */
+    public int batchOaDutyRoom(List<OaDutyRoom> oaDutyRoomList);
+    
+
+    /**
+     * 通过排班主键删除排班中间信息
+     * 
+     * @param scheduleId 排班ID
+     * @return 结果
+     */
+    public int deleteOaDutyRoomByShiftId(@Param("scheduleId") Long scheduleId);
 }

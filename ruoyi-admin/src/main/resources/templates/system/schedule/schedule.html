@@ -1,76 +1,72 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('排班列表')"/>
+    <th:block th:include="include :: header('排班列表')" />
 </head>
 <body class="gray-bg">
-<div class="container-div">
-    <div class="row">
-        <div class="col-sm-12 search-collapse">
-            <form id="formId">
-                <div class="select-list">
-                    <ul>
-                        <li>
-                            <label>排班名称：</label>
-                            <input name="scheduleName" type="text"/>
-                        </li>
-                        <li>
-                            <label>部门id：</label>
-                            <input name="deptId" type="text"/>
-                        </li>
-                        <li>
-                            <label>请选择状态：</label>
-                            <input name="approvalState" type="text"/>
-                        </li>
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
-                                    class="fa fa-search"></i>&nbsp;搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
-                                    class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-        </div>
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>排班名称：</label>
+                                <input type="text" name="scheduleName"/>
+                            </li>
+                            <li>
+                                <label>审批状态：</label>
+                                <input type="text" name="approvalState"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
 
-        <div class="btn-group-sm" id="toolbar" role="group">
-            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:schedule:add">
-                <i class="fa fa-plus"></i> 添加
-            </a>
-            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
-               shiro:hasPermission="system:schedule:edit">
-                <i class="fa fa-edit"></i> 修改
-            </a>
-            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
-               shiro:hasPermission="system:schedule:remove">
-                <i class="fa fa-remove"></i> 删除
-            </a>
-        </div>
-        <div class="col-sm-12 select-table table-striped">
-            <table id="bootstrap-table"></table>
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:schedule:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:schedule:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:schedule:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:schedule:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
         </div>
     </div>
-</div>
-<th:block th:include="include :: footer"/>
-<script th:inline="javascript">
-    var editFlag = [[${@permission.hasPermi('system:schedule:edit')}]];
-    var removeFlag = [[${@permission.hasPermi('system:schedule:remove')}]];
-    var prefix = ctx + "system/schedule";
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:schedule:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:schedule:remove')}]];
+        var prefix = ctx + "system/schedule";
 
-    $(function () {
-        var options = {
-            url: prefix + "/query",
-            createUrl: prefix + "/add",
-            updateUrl: prefix + "/edit/{id}",
-            removeUrl: prefix + "/remove",
-            exportUrl: prefix + "/export",
-            modalName: "排班",
-            columns: [{
-                checkbox: true
-            },
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "排班",
+                columns: [{
+                    checkbox: true
+                },
                 {
                     field: 'scheduleId',
-                    title: '编号'
+                    title: '排班id',
+                    // visible: false
                 },
                 {
                     field: 'scheduleName',
@@ -78,35 +74,34 @@
                 },
                 {
                     field: 'dept.deptName',
-                    title: '部门'
+                    title: '部门id'
                 },
+
                 {
                     field: 'sysUser.userName',
                     title: '创建人'
                 },
                 {
-                    field: 'createdTime',
+                    field: 'createTime',
                     title: '创建时间'
-                },
-                {
-                    field: 'approvalState',
-                    title: '审批状态'
-                },
-
+                },{
+                        field: 'approvalState',
+                        title: '审批状态'
+                    },
                 {
                     title: '操作',
                     align: 'center',
-                    formatter: function (value, row, index) {
+                    formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sId + '\')"><i class="fa fa-edit"></i>查看</a> ');
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sId + '\')"><i class="fa fa-edit"></i>修改</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.scheduleId + '\')"><i class="fa fa-search"></i>详细</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.scheduleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.scheduleId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]
-        };
-        $.table.init(options);
-    });
-</script>
+            };
+            $.table.init(options);
+        });
+    </script>
 </body>
 </html>

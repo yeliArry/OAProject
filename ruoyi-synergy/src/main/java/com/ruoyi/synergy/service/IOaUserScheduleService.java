@@ -1,23 +1,24 @@
 package com.ruoyi.synergy.service;
 
 import java.util.List;
+
 import com.ruoyi.synergy.domain.OaUserSchedule;
 
 /**
  * 排班Service接口
  * 
  * @author ruoyi
- * @date 2023-03-25
+ * @date 2023-03-28
  */
 public interface IOaUserScheduleService 
 {
     /**
      * 查询排班
      * 
-     * @param sId 排班主键
+     * @param scheduleId 排班主键
      * @return 排班
      */
-    public OaUserSchedule selectOaUserScheduleBySId(Long sId);
+    public OaUserSchedule selectOaUserScheduleBySId(Long scheduleId);
 
     /**
      * 查询排班列表
@@ -46,24 +47,16 @@ public interface IOaUserScheduleService
     /**
      * 批量删除排班
      * 
-     * @param sIds 需要删除的排班主键集合
+     * @param scheduleIds 需要删除的排班主键集合
      * @return 结果
      */
-    public int deleteOaUserScheduleBySIds(String sIds);
+    public int deleteOaUserScheduleBySIds(String scheduleIds);
 
     /**
      * 删除排班信息
      * 
-     * @param sId 排班主键
+     * @param scheduleId 排班主键
      * @return 结果
      */
-    public int deleteOaUserScheduleBySId(Long sId);
-
-    /**
-     * 查询全部
-     * @param oaUserSchedule 后面需要的查询条件
-     * @return
-     */
-    List<OaUserSchedule> query(OaUserSchedule oaUserSchedule);
-
+    public int deleteOaUserScheduleBySId(Long scheduleId);
 }
