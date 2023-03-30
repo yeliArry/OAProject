@@ -29,15 +29,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="blockName != null  and blockName != ''"> and block_name like concat('%', #{blockName}, '%')</if>
             <if test="unitType != null  and unitType != ''"> and unit_type = #{unitType}</if>
-            <if test="storageId != null  and storageId != ''"> and storage_id = #{storageId}</if>
+            <if test="storageId != null  and storageId != ''"> and storage_id like concat('%', #{storageId}, '%')</if>
             <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
             <if test="blockStatus != null "> and block_status = #{blockStatus}</if>
             <if test="usageState != null "> and usage_state = #{usageState}</if>
-            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
-            <if test="createdTime != null "> and created_time = #{createdTime}</if>
-            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
-            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
         </where>
     </select>
     

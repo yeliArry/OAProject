@@ -60,6 +60,7 @@ public class OaUserScheduleController extends BaseController
     {
         startPage();
         List<OaUserSchedule> list = oaUserScheduleService.selectOaUserScheduleList(oaUserSchedule);
+
         return getDataTable(list);
     }
 
@@ -102,7 +103,7 @@ public class OaUserScheduleController extends BaseController
     public AjaxResult addSave(OaUserSchedule oaUserSchedule)
     {
         oaUserSchedule.setUserId(ShiroUtils.getUserId());
-        System.out.println(oaUserSchedule.getScheduleName()+"==============================================================");
+
         return toAjax(oaUserScheduleService.insertOaUserSchedule(oaUserSchedule));
     }
 
@@ -111,13 +112,23 @@ public class OaUserScheduleController extends BaseController
      */
     @RequiresPermissions("system:schedule:edit")
     @GetMapping("/edit/{scheduleId}")
-    public String edit(@PathVariable("scheduleId") Long scheduleId, ModelMap mmap)
+    public String edit(@PathVariable("scheduleId")Long scheduleId, ModelMap mmap)
     {
         OaUserSchedule oaUserSchedule = oaUserScheduleService.selectOaUserScheduleBySId(scheduleId);
         mmap.put("oaUserSchedule", oaUserSchedule);
         return prefix + "/edit";
     }
-
+    /**
+     * 修改排班
+     */
+    @RequiresPermissions("system:schedule:detail")
+    @GetMapping("/detail/{scheduleId}")
+    public String examine(@PathVariable("scheduleId")Long scheduleId, ModelMap mmap)
+    {
+        OaUserSchedule oaUserSchedule = oaUserScheduleService.selectOaUserScheduleBySId(scheduleId);
+        mmap.put("oaUserSchedule", oaUserSchedule);
+        return  "/system/schedule/examine";
+    }
     /**
      * 修改保存排班
      */

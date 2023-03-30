@@ -3,6 +3,7 @@ package com.ruoyi.synergy.domain;
 import java.util.List;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -28,14 +29,7 @@ public class OaUserDuty extends BaseEntity
     /** 排班id */
     @Excel(name = "排班id")
     private Long scheduleId;
-
-    /** 部门id */
-    @Excel(name = "部门id")
-    private Long deptId;
-
-    /** 创建人 */
-    @Excel(name = "创建人")
-    private Long userId;
+    private OaUserSchedule oaUserSchedule;
 
     /** 当前时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -79,7 +73,10 @@ public class OaUserDuty extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    public void setdId(Long dId) 
+
+
+
+    public void setdId(Long dId)
     {
         this.dId = dId;
     }
@@ -88,7 +85,16 @@ public class OaUserDuty extends BaseEntity
     {
         return dId;
     }
-    public void setdName(String dName) 
+
+    public OaUserSchedule getOaUserSchedule() {
+        return oaUserSchedule;
+    }
+
+    public void setOaUserSchedule(OaUserSchedule oaUserSchedule) {
+        this.oaUserSchedule = oaUserSchedule;
+    }
+
+    public void setdName(String dName)
     {
         this.dName = dName;
     }
@@ -106,24 +112,7 @@ public class OaUserDuty extends BaseEntity
     {
         return scheduleId;
     }
-    public void setDeptId(Long deptId) 
-    {
-        this.deptId = deptId;
-    }
 
-    public Long getDeptId() 
-    {
-        return deptId;
-    }
-    public void setUserId(Long userId) 
-    {
-        this.userId = userId;
-    }
-
-    public Long getUserId() 
-    {
-        return userId;
-    }
     public void setCurrentTime(Date currentTime) 
     {
         this.currentTime = currentTime;
@@ -221,8 +210,6 @@ public class OaUserDuty extends BaseEntity
             .append("dId", getdId())
             .append("dName", getdName())
             .append("scheduleId", getScheduleId())
-            .append("deptId", getDeptId())
-            .append("userId", getUserId())
             .append("currentTime", getCurrentTime())
             .append("dPeople", getdPeople())
             .append("dState", getdState())

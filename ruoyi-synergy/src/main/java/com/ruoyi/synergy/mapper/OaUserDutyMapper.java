@@ -1,6 +1,7 @@
 package com.ruoyi.synergy.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.synergy.domain.OaUserDuty;
 
@@ -27,7 +28,8 @@ public interface OaUserDutyMapper
      * @param oaUserDuty 值班
      * @return 值班集合
      */
-    public List<OaUserDuty> selectOaUserDutyList(OaUserDuty oaUserDuty);
+    //public List<OaUserDuty> selectOaUserDutyList(OaUserDuty oaUserDuty);
+    public List<Map<String, Object>> selectOaUserDutyList(OaUserDuty oaUserDuty);
 
     /**
      * 新增值班

@@ -3,6 +3,7 @@ package com.ruoyi.synergy.service;
 import java.util.List;
 
 import com.ruoyi.synergy.domain.OaUserSchedule;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 排班Service接口

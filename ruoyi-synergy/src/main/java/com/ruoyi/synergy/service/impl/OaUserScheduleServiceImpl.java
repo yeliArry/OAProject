@@ -34,7 +34,7 @@ public class OaUserScheduleServiceImpl implements IOaUserScheduleService
     @Override
     public OaUserSchedule selectOaUserScheduleBySId(Long scheduleId)
     {
-        return oaUserScheduleMapper.selectOaUserScheduleBysId(scheduleId);
+        return oaUserScheduleMapper.selectOaUserScheduleBySId(scheduleId);
     }
 
     /**
@@ -79,7 +79,6 @@ public class OaUserScheduleServiceImpl implements IOaUserScheduleService
         insertOaDutyRoom(oaUserSchedule);
         return oaUserScheduleMapper.updateOaUserSchedule(oaUserSchedule);
     }
-
     /**
      * 批量删除排班
      * 

@@ -46,6 +46,8 @@ public class OaUserSchedule extends BaseEntity
     @Excel(name = "创建人")
     private Long userId;
     private SysUser sysUser;
+
+
     /** 7天值班人员 */
     @Excel(name = "7天值班人员")
     private Long shiftId;

@@ -1,9 +1,12 @@
 package com.ruoyi.synergy.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.synergy.domain.OaUserDuty;
+import com.ruoyi.synergy.domain.OaUserSchedule;
 import com.ruoyi.synergy.mapper.OaUserDutyMapper;
+import com.ruoyi.synergy.mapper.OaUserScheduleMapper;
 import com.ruoyi.synergy.service.IOaUserDutyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class OaUserDutyServiceImpl implements IOaUserDutyService
 {
     @Autowired
     private OaUserDutyMapper oaUserDutyMapper;
+
 
     /**
      * 查询值班
@@ -40,7 +44,8 @@ public class OaUserDutyServiceImpl implements IOaUserDutyService
      * @return 值班
      */
     @Override
-    public List<OaUserDuty> selectOaUserDutyList(OaUserDuty oaUserDuty)
+    //public List<OaUserDuty> selectOaUserDutyList(OaUserDuty oaUserDuty)
+    public List<Map<String, Object>> selectOaUserDutyList(OaUserDuty oaUserDuty)
     {
         return oaUserDutyMapper.selectOaUserDutyList(oaUserDuty);
     }
@@ -66,6 +71,7 @@ public class OaUserDutyServiceImpl implements IOaUserDutyService
     @Override
     public int updateOaUserDuty(OaUserDuty oaUserDuty)
     {
+
         return oaUserDutyMapper.updateOaUserDuty(oaUserDuty);
     }
 

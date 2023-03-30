@@ -43,10 +43,7 @@
             <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:duty:add">
                 <i class="fa fa-plus"></i> 添加
             </a>
-            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
-               shiro:hasPermission="system:duty:edit">
-                <i class="fa fa-edit"></i> 修改
-            </a>
+
             <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
                shiro:hasPermission="system:duty:remove">
                 <i class="fa fa-remove"></i> 删除
@@ -62,6 +59,8 @@
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('system:duty:edit')}]];
     var removeFlag = [[${@permission.hasPermi('system:duty:remove')}]];
+    var detail = [[${@permission.hasPermi('system:schedule:detail')}]];
+
     var prefix = ctx + "system/duty";
 
     $(function () {
@@ -71,6 +70,7 @@
             updateUrl: prefix + "/edit/{id}",
             removeUrl: prefix + "/remove",
             exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
             modalName: "值班",
             columns: [{
                 checkbox: true
@@ -85,19 +85,19 @@
                     title: '值班名称'
                 },
                 {
-                    field: 'scheduleId',
+                    field: 'scheduleName',
                     title: '排班名称'
                 },
                 {
-                    field: 'deptId',
+                    field: 'deptName',
                     title: '部门'
                 },
                 {
-                    field: 'userId',
+                    field: 'userName',
                     title: '创建人'
                 },
                 {
-                    field: 'createdTime',
+                    field: 'currentTime',
                     title: '创建时间'
                 },
                 {
@@ -105,7 +105,7 @@
                     title: '值班人'
                 },
                 {
-                    field: 'dState',
+                    field: 'State',
                     title: '值班状态'
                 },
 
@@ -114,7 +114,7 @@
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.dId + '\')"><i class="fa fa-edit"></i>查看</a> ');
+                        actions.push('<a class="btn btn-info btn-xs ' + detail + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.dId + '\')"><i class="fa fa-search"></i>详细</a> ');
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.dId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.dId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');

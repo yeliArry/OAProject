@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 参试设备对象 oa_reference_block
  * 
  * @author ruoyi
- * @date 2023-03-25
+ * @date 2023-03-30
  */
 public class OaReferenceBlock extends BaseEntity
 {

@@ -20,7 +20,7 @@ public interface OaUserScheduleMapper
      * @param scheduleId 排班主键
      * @return 排班
      */
-    public OaUserSchedule selectOaUserScheduleBysId(Long scheduleId);
+    public OaUserSchedule selectOaUserScheduleBySId(Long scheduleId);
 
     /**
      * 查询排班列表
@@ -45,6 +45,8 @@ public interface OaUserScheduleMapper
      * @return 结果
      */
     public int updateOaUserSchedule(OaUserSchedule oaUserSchedule);
+
+
 
     /**
      * 删除排班
@@ -86,4 +88,5 @@ public interface OaUserScheduleMapper
      * @return 结果
      */
     public int deleteOaDutyRoomByShiftId(@Param("scheduleId") Long scheduleId);
+
 }

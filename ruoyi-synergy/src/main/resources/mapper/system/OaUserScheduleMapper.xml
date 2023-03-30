@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="userName" column="user_Name"/>
         </association>
         <association property="dept" javaType="SysDept">
-            <id property="depId" column="dep_Id"/>
+            <id property="deptId" column="dep_Id"/>
             <result property="deptName" column="dept_Name"/>
         </association>
 
@@ -68,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from oa_user_schedule u
                  left join sys_user su on u.user_id = su.user_id
                  left join sys_dept sd on u.dept_id = sd.dept_id
+                left join oa_duty_room odr on u.user_id = odr.shift_id
 
     </sql>
 
@@ -81,10 +82,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectOaUserScheduleBySId" parameterType="Long" resultMap="OaUserScheduleResult">
-        select a.s_id, a.s_name, a.dept_id, a.create_time, a.approval_state, a.user_id, a.shift_id, a.d_attachment, a.d_comment, a.del_flag, a.created_by, a.created_time, a.updated_by, a.updated_time,
- b.shift_id as sub_shift_id, b.shift_date as sub_shift_date, b.user_id as sub_user_id, b.del_flag as sub_del_flag, b.created_by as sub_created_by, b.created_time as sub_created_time, b.updated_by as sub_updated_by, b.updated_time as sub_updated_time
+        select a.s_id, a.s_name as scheduleName,
+               a.dept_id,
+               a.create_time,
+               a.approval_state,
+               a.user_id,
+               a.shift_id,
+               a.d_attachment,
+               a.d_comment,
+               a.del_flag,
+               a.created_by,
+               a.created_time,
+               a.updated_by,
+               a.updated_time,
+               b.shift_id as sub_shift_id,
+               b.shift_date as sub_shift_date,
+               b.user_id as sub_user_id,
+               b.del_flag as sub_del_flag,
+               b.created_by as sub_created_by,
+               b.created_time as sub_created_time,
+               b.updated_by as sub_updated_by,
+               b.updated_time as sub_updated_time
         from oa_user_schedule a
-        left join oa_duty_room b on b.shift_id = a.s_id
+                 left join oa_duty_room b on b.shift_id = a.s_id
         where a.s_id = #{scheduleId}
     </select>
         
@@ -130,14 +150,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="approvalState != null">approval_state = #{approvalState},</if>
             <if test="userId != null">user_id = #{userId},</if>
-            <if test="shiftId != null">shift_id = #{shiftId},</if>
             <if test="dAttachment != null">d_attachment = #{dAttachment},</if>
             <if test="dComment != null">d_comment = #{dComment},</if>
-            <if test="delFlag != null">del_flag = #{delFlag},</if>
-            <if test="createdBy != null">created_by = #{createdBy},</if>
-            <if test="createdTime != null">created_time = #{createdTime},</if>
-            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
-            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
         </trim>
         where s_id = #{scheduleId}
     </update>
