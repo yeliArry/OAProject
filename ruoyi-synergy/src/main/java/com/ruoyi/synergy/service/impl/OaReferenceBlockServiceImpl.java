@@ -1,6 +1,7 @@
 package com.ruoyi.synergy.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.synergy.domain.OaReferenceBlock;
 import com.ruoyi.synergy.mapper.OaReferenceBlockMapper;
@@ -40,7 +41,7 @@ public class OaReferenceBlockServiceImpl implements IOaReferenceBlockService
      * @return 参试设备
      */
     @Override
-    public List<OaReferenceBlock> selectOaReferenceBlockList(OaReferenceBlock oaReferenceBlock)
+    public List<Map<String, Object>> selectOaReferenceBlockList(OaReferenceBlock oaReferenceBlock)
     {
         return oaReferenceBlockMapper.selectOaReferenceBlockList(oaReferenceBlock);
     }
@@ -92,4 +93,15 @@ public class OaReferenceBlockServiceImpl implements IOaReferenceBlockService
     {
         return oaReferenceBlockMapper.deleteOaReferenceBlockByBlockId(blockId);
     }
+
+    /**
+     * 出库修改状态并新增数据到另一个表
+     * @param blockId
+     * @return
+     */
+    @Override
+    public int updateStorage(Long blockId,Long blockStatus) {
+        return oaReferenceBlockMapper.updateStorage(blockId,blockStatus);
+    }
+
 }

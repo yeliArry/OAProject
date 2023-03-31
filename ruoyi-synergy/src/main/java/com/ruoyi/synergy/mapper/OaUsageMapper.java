@@ -1,8 +1,12 @@
 package com.ruoyi.synergy.mapper;
 
+import com.ruoyi.synergy.domain.OaReferenceBlock;
 import com.ruoyi.synergy.domain.OaUsage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * 参试设备——我的使用Mapper接口
  * 
@@ -22,10 +26,11 @@ public interface OaUsageMapper
     /**
      * 查询参试设备——我的使用列表
      * 
-     * @param oaUsage 参试设备——我的使用
+     * @param blockName 参试设备——我的使用
      * @return 参试设备——我的使用集合
      */
-    public List<OaUsage> selectOaUsageList(OaUsage oaUsage);
+    public List<Map<String, Object>> selectOaUsageList(@Param("blockName") String blockName,
+                                                       @Param("usageState") Integer usageState);
 
     /**
      * 新增参试设备——我的使用
@@ -58,4 +63,13 @@ public interface OaUsageMapper
      * @return 结果
      */
     public int deleteOaUsageByUsageIds(String[] usageIds);
+
+    /**
+     * 入库
+     * @param blockStatus
+     * @param blockStatus
+     * @return
+     */
+    public int upStorage(@Param("blockId") Long blockId,@Param("blockStatus") Long blockStatus,@Param("usageState") Long usageState);
+
 }

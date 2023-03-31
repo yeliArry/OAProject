@@ -1,6 +1,7 @@
 package com.ruoyi.synergy.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.synergy.domain.OaUsage;
 import com.ruoyi.synergy.mapper.OaUsageMapper;
@@ -36,13 +37,13 @@ public class OaUsageServiceImpl implements IOaUsageService
     /**
      * 查询参试设备——我的使用列表
      * 
-     * @param oaUsage 参试设备——我的使用
+     * @param blockName 参试设备——我的使用
      * @return 参试设备——我的使用
      */
     @Override
-    public List<OaUsage> selectOaUsageList(OaUsage oaUsage)
+    public List<Map<String, Object>> selectOaUsageList(String blockName, Integer usageState)
     {
-        return oaUsageMapper.selectOaUsageList(oaUsage);
+        return oaUsageMapper.selectOaUsageList(blockName, usageState);
     }
 
     /**
@@ -91,5 +92,11 @@ public class OaUsageServiceImpl implements IOaUsageService
     public int deleteOaUsageByUsageId(Long usageId)
     {
         return oaUsageMapper.deleteOaUsageByUsageId(usageId);
+    }
+
+
+    @Override
+    public int upStorage(Long blockId,Long blockStatus, Long usageState) {
+        return oaUsageMapper.upStorage(blockId,blockStatus,usageState);
     }
 }

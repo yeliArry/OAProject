@@ -1,8 +1,10 @@
 package com.ruoyi.synergy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.synergy.domain.OaUsage;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 参试设备——我的使用Service接口
@@ -23,10 +25,10 @@ public interface IOaUsageService
     /**
      * 查询参试设备——我的使用列表
      * 
-     * @param oaUsage 参试设备——我的使用
+     * @param blockName 参试设备——我的使用
      * @return 参试设备——我的使用集合
      */
-    public List<OaUsage> selectOaUsageList(OaUsage oaUsage);
+    public List<Map<String, Object>> selectOaUsageList(String blockName, Integer usageState);
 
     /**
      * 新增参试设备——我的使用
@@ -59,4 +61,13 @@ public interface IOaUsageService
      * @return 结果
      */
     public int deleteOaUsageByUsageId(Long usageId);
+
+
+    /**
+     * 入库
+     * @param blockStatus
+     * @param blockStatus
+     * @return
+     */
+    public int upStorage(Long blockId,Long blockStatus, Long usageState);
 }

@@ -18,21 +18,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createdTime"    column="created_time"    />
         <result property="updatedBy"    column="updated_by"    />
         <result property="updatedTime"    column="updated_time"    />
+        <association property="sysUser" javaType="SysUser">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="user_Name"/>
+        </association>
     </resultMap>
 
     <sql id="selectOaReferenceBlockVo">
-        select block_id, block_name, unit_type, storage_id, user_id, creation_time, block_status, usage_state, del_flag, created_by, created_time, updated_by, updated_time from oa_reference_block
+        select block_id,
+               block_name,
+               unit_type,
+               storage_id,
+               user_id,
+               creation_time,
+               block_status,
+               usage_state,
+               del_flag,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time
+        from oa_reference_block
     </sql>
-
-    <select id="selectOaReferenceBlockList" parameterType="OaReferenceBlock" resultMap="OaReferenceBlockResult">
-        <include refid="selectOaReferenceBlockVo"/>
-        <where>  
-            <if test="blockName != null  and blockName != ''"> and block_name like concat('%', #{blockName}, '%')</if>
-            <if test="unitType != null  and unitType != ''"> and unit_type = #{unitType}</if>
-            <if test="storageId != null  and storageId != ''"> and storage_id like concat('%', #{storageId}, '%')</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="blockStatus != null "> and block_status = #{blockStatus}</if>
-            <if test="usageState != null "> and usage_state = #{usageState}</if>
+    <sql id="selectOaReferenceBlockVo2">
+        select ob.block_id as blockId,
+              ob.block_name as blockName,
+              ob.unit_type as unitType,
+              ob.storage_id as storageId,
+               su.user_id as userid,
+               su.user_name as userName,
+               ob.creation_time as creationTime,
+               ob.block_status as blockStatus,
+               ob.usage_state as usageState,
+               ob.del_flag as delFlag,
+               ob.created_by as createdBy,
+               ob.created_time as createdTime,
+               ob.updated_by as updateBy,
+               ob.updated_time as updateTime
+        from oa_reference_block ob
+                 left  join sys_user su on ob.user_id = su.user_id
+    </sql>
+    <select id="selectOaReferenceBlockList" resultType="java.util.Map">
+        <include refid="selectOaReferenceBlockVo2"/>
+        <where>
+            ob.usage_state=1 or ob.usage_state=2
+            <if test="blockName != null  and blockName != ''"> and  ob.block_name like concat('%', #{blockName}, '%')</if>
+            <if test="unitType != null  and unitType != ''"> and  ob.unit_type = #{unitType}</if>
+            <if test="storageId != null  and storageId != ''"> and  ob.storage_id like concat('%', #{storageId}, '%')</if>
+            <if test="userId != null "> and  su.user_id = #{userId}</if>
+            <if test="blockStatus != null "> and  ob.block_status = #{blockStatus}</if>
+            <if test="usageState != null "> and  ob.usage_state = #{usageState}</if>
         </where>
     </select>
     
@@ -91,6 +126,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where block_id = #{blockId}
     </update>
+    <update id="updateStorage">
+        update oa_reference_block set usage_state=2 , block_status=2 where block_id=#{blockId}
+
+    </update>
 
     <delete id="deleteOaReferenceBlockByBlockId" parameterType="Long">
         delete from oa_reference_block where block_id = #{blockId}
@@ -102,5 +141,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{blockId}
         </foreach>
     </delete>
+
 
 </mapper>

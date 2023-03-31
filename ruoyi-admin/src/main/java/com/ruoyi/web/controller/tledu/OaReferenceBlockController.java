@@ -1,18 +1,21 @@
 package com.ruoyi.web.controller.tledu;
 
 import java.util.List;
+import java.util.Map;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.synergy.domain.OaReferenceBlock;
 import com.ruoyi.synergy.service.IOaReferenceBlockService;
+import com.ruoyi.system.service.ISysUserService;
+import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.core.controller.BaseController;
@@ -35,6 +38,9 @@ public class OaReferenceBlockController extends BaseController
     @Autowired
     private IOaReferenceBlockService oaReferenceBlockService;
 
+    @Autowired
+    private ISysUserService userService;
+
     @RequiresPermissions("system:block:view")
     @GetMapping()
     public String block()
@@ -51,30 +57,33 @@ public class OaReferenceBlockController extends BaseController
     public TableDataInfo list(OaReferenceBlock oaReferenceBlock)
     {
         startPage();
-        List<OaReferenceBlock> list = oaReferenceBlockService.selectOaReferenceBlockList(oaReferenceBlock);
+        List<Map<String, Object>> list = oaReferenceBlockService.selectOaReferenceBlockList(oaReferenceBlock);
+
         return getDataTable(list);
     }
 
-    /**
-     * 导出参试设备列表
-     */
-    @RequiresPermissions("system:block:export")
-    @Log(title = "参试设备", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(OaReferenceBlock oaReferenceBlock)
-    {
-        List<OaReferenceBlock> list = oaReferenceBlockService.selectOaReferenceBlockList(oaReferenceBlock);
-        ExcelUtil<OaReferenceBlock> util = new ExcelUtil<OaReferenceBlock>(OaReferenceBlock.class);
-        return util.exportExcel(list, "参试设备数据");
-    }
+//    /**
+//     * 导出参试设备列表
+//     */
+//    @RequiresPermissions("system:block:export")
+//    @Log(title = "参试设备", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    @ResponseBody
+//    public AjaxResult export(OaReferenceBlock oaReferenceBlock)
+//    {
+//        List<Map<String, Object>> list = oaReferenceBlockService.selectOaReferenceBlockList(oaReferenceBlock);
+//        ExcelUtil<OaReferenceBlock> util = new ExcelUtil<OaReferenceBlock>(OaReferenceBlock.class);
+//        return util.exportExcel(list, "参试设备数据");
+//    }
 
     /**
      * 新增参试设备
      */
     @GetMapping("/add")
-    public String add()
+    public String add(Model model)
     {
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("user",user);
         return prefix + "/add";
     }
 
@@ -99,6 +108,9 @@ public class OaReferenceBlockController extends BaseController
     {
         OaReferenceBlock oaReferenceBlock = oaReferenceBlockService.selectOaReferenceBlockByBlockId(blockId);
         mmap.put("oaReferenceBlock", oaReferenceBlock);
+
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        mmap.addAttribute("user",user);
         return prefix + "/edit";
     }
 
@@ -124,5 +136,14 @@ public class OaReferenceBlockController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(oaReferenceBlockService.deleteOaReferenceBlockByBlockIds(ids));
+    }
+
+    @RequiresPermissions("system:block:Storage")
+    @GetMapping( "/Storage/{blockId}/{blockStatus}")
+    @ResponseBody
+    public AjaxResult updateStorage(@PathVariable("blockId") Long blockId,
+                                    @PathVariable("blockStatus") Long blockStatus){
+
+        return toAjax(oaReferenceBlockService.updateStorage(blockId,blockStatus));
     }
 }

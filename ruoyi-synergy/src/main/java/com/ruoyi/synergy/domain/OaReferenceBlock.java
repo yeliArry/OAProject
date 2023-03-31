@@ -2,6 +2,7 @@ package com.ruoyi.synergy.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -36,6 +37,7 @@ public class OaReferenceBlock extends BaseEntity
     @Excel(name = "用户id")
     private Long userId;
 
+    private SysUser sysUser;
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -70,7 +72,15 @@ public class OaReferenceBlock extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    public void setBlockId(Long blockId) 
+    public SysUser getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(SysUser sysUser) {
+        this.sysUser = sysUser;
+    }
+
+    public void setBlockId(Long blockId)
     {
         this.blockId = blockId;
     }

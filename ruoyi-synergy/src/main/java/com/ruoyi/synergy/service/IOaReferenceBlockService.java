@@ -1,8 +1,10 @@
 package com.ruoyi.synergy.service;
 
 import com.ruoyi.synergy.domain.OaReferenceBlock;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 参试设备Service接口
@@ -26,7 +28,7 @@ public interface IOaReferenceBlockService
      * @param oaReferenceBlock 参试设备
      * @return 参试设备集合
      */
-    public List<OaReferenceBlock> selectOaReferenceBlockList(OaReferenceBlock oaReferenceBlock);
+    public List<Map<String, Object>> selectOaReferenceBlockList(OaReferenceBlock oaReferenceBlock);
 
     /**
      * 新增参试设备
@@ -59,4 +61,13 @@ public interface IOaReferenceBlockService
      * @return 结果
      */
     public int deleteOaReferenceBlockByBlockId(Long blockId);
+
+    /**
+     * 出库修改状态
+     * @param blockId
+     * @return
+     */
+    public int updateStorage(Long blockId,Long blockStatus);
+
+
 }

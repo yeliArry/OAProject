@@ -1097,6 +1097,30 @@ var table = {
                     }
                 });
             },
+            warehouse: function(id) {
+                table.set();
+                $.modal.confirm("确定入库吗？", function() {
+                    var url = $.common.isEmpty(id) ? table.options.warehouse : table.options.warehouse.replace("{id}", id);
+                    if (table.options.type == table_type.bootstrapTreeTable) {
+                        $.operate.get(url);
+                    } else {
+                        var data = { "ids": id };
+                        $.operate.submit(url, "get", "json", data);
+                    }
+                });
+            },
+            Storage: function(id) {
+                table.set();
+                $.modal.confirm("确定要入库吗？", function() {
+                    var url = $.common.isEmpty(id) ? table.options.Storage : table.options.Storage.replace("{id}", id);
+                    if (table.options.type == table_type.bootstrapTreeTable) {
+                        $.operate.get(url);
+                    } else {
+                        var data = { "ids": id };
+                        $.operate.submit(url, "get", "json", data);
+                    }
+                });
+            },
             // 批量删除信息
             removeAll: function() {
                 table.set();

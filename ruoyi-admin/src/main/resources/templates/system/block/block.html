@@ -19,12 +19,12 @@
                                 <input type="text" name="storageId"/>
                             </li>
                             <li>
-                                <label>用户id：</label>
-                                <input type="text" name="userId"/>
-                            </li>
-                            <li>
                                 <label>使用状态：</label>
-                                <input type="text" name="usageState"/>
+                                <select name="usageState" id="usageState" >
+                                    <option value="" th:text="请选择..."></option>
+                                    <option value="1">未出库</option>
+                                    <option value="2">已出库</option>
+                                </select>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -39,9 +39,6 @@
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:block:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:block:remove">
-                    <i class="fa fa-remove"></i> 删除
-                </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:block:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
@@ -54,7 +51,7 @@
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:block:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('system:block:remove')}]];
+        var Storage = [[${@permission.hasPermi('system:block:Storage')}]];
         var prefix = ctx + "system/block";
 
         $(function() {
@@ -62,7 +59,7 @@
                 url: prefix + "/list",
                 createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
+                Storage: prefix + "/Storage/{id}",
                 exportUrl: prefix + "/export",
                 modalName: "参试设备",
                 columns: [{
@@ -71,7 +68,7 @@
                 {
                     field: 'blockId',
                     title: '编号',
-                    visible: false
+                    // visible: false
                 },
                 {
                     field: 'blockName',
@@ -86,8 +83,8 @@
                     title: '存放位置'
                 },
                 {
-                    field: 'userId',
-                    title: '用户id'
+                    field: 'userName',
+                    title: '创建人'
                 },
                 {
                     field: 'creationTime',
@@ -95,11 +92,28 @@
                 },
                 {
                     field: 'blockStatus',
-                    title: '设备状态'
+                    title: '设备状态',
+                    formatter:function(value){
+                        if(value ==1){
+                            return "未试验";
+                        }else if (value ==2){
+                            return "实验中";
+                        }else if (value==3){
+                            return "试验完成";
+                        }
+                    }
                 },
                 {
                     field: 'usageState',
-                    title: '使用状态'
+                    title: '使用状态',
+                    formatter:function(value){
+                        if (value==1){
+                            return "未出库";
+                        }else if (value == 2) {
+                            return "已出库"
+                        }
+                    }
+
                 },
                 {
                     title: '操作',
@@ -107,8 +121,18 @@
                     formatter: function(value, row, index) {
                         var actions = [];
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.blockId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.blockId + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.blockId + '\')"><i class="fa fa-remove"></i></a>');
+                        actions.push('<a id="aa'+row.blockId+'" class="btn btn-danger btn-xs ' + Storage + '" href="javascript:void(0)" onclick="$.operate.Storage(\'' + row.blockId + "/" +row.blockStatus + '\')"><i class="fa fa-remove"></i>出库</a>');
+                        if (row.usageState == 2){
+                            let id = "#aa"+row.blockId;
+                            setTimeout(function (){
+                                aa()
+                            },100)
+                            function aa(){
+                                $(id).attr("disabled", "disabled")
+                                $(id).attr("onclick", "")
+
+                            }
+                        }
                         return actions.join('');
                     }
                 }]

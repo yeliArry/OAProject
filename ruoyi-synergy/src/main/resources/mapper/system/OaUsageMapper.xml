@@ -7,33 +7,62 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="OaUsage" id="OaUsageResult">
         <result property="usageId"    column="usage_id"    />
         <result property="blockId"    column="block_id"    />
-        <result property="usageState"    column="usage_state"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createdBy"    column="created_by"    />
         <result property="createdTime"    column="created_time"    />
         <result property="updatedBy"    column="updated_by"    />
         <result property="updatedTime"    column="updated_time"    />
+        <association property="oaReferenceBlock" javaType="OaReferenceBlock">
+            <id property="blockId" column="block_id"/>
+            <result property="blockName" column="block_Name"/>
+            <result property="unitType" column="unit_type"/>
+            <result property="storageId" column="storage_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="creationTime" column="creation_time"/>
+            <result property="blockStatus" column="block_status"/>
+            <result property="usageState" column="usage_state"/>
+            <association property="sysUser" javaType="SysUser">
+                <id property="userId" column="user_Id"/>
+                <result property="userName" column="user_Name"/>
+            </association>
+        </association>
     </resultMap>
 
     <sql id="selectOaUsageVo">
-        select usage_id, block_id, usage_state, del_flag, created_by, created_time, updated_by, updated_time from oa_usage
-    </sql>
+        select ou.usage_id as usageId,
+               ou.block_id as blockId,
+               orb.block_name as blockName,
+               orb.unit_type as unitType,
+               orb.storage_id as storageId,
+               orb.user_id as userId,
+               su.user_name as userName,
+               orb.creation_time as creationTime,
+               orb.block_status as bookState,
+               orb.usage_state as usageState,
+               ou.del_flag as delFlage,
+               ou.created_by as createdBy,
+               ou.created_time as createdTime,
+               ou.updated_by as updateBy,
+               ou.updated_time as updatedTime
+        from oa_usage ou
+                 left join oa_reference_block orb on ou.block_id = orb.block_id
+                 left join sys_user su on orb.user_id = su.user_id
 
-    <select id="selectOaUsageList" parameterType="OaUsage" resultMap="OaUsageResult">
+</sql>
+
+    <select id="selectOaUsageList"  resultType="java.util.Map">
         <include refid="selectOaUsageVo"/>
-        <where>  
-            <if test="blockId != null "> and block_id = #{blockId}</if>
-            <if test="usageState != null "> and usage_state = #{usageState}</if>
-            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
-            <if test="createdTime != null "> and created_time = #{createdTime}</if>
-            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
-            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        <where>
+             usage_state=2
+                <if test="blockName != null "> and  block_name like concat('%', #{blockName}, '%')</if>
+                <if test="usageState != null "> and orb.usage_state = #{usageState}</if>
+
         </where>
     </select>
     
     <select id="selectOaUsageByUsageId" parameterType="Long" resultMap="OaUsageResult">
         <include refid="selectOaUsageVo"/>
-        where usage_id = #{usageId}
+        where usage_state=2 and usage_id = #{usageId}
     </select>
         
     <insert id="insertOaUsage" parameterType="OaUsage" useGeneratedKeys="true" keyProperty="usageId">
@@ -83,4 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <update id="upStorage">
+        update oa_reference_block set usage_state=1 ,block_status=3 where block_id=#{blockId}
+    </update>
 </mapper>
