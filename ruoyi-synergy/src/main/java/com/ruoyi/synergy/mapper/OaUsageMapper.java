@@ -31,6 +31,8 @@ public interface OaUsageMapper
      */
     public List<Map<String, Object>> selectOaUsageList(@Param("blockName") String blockName,
                                                        @Param("usageState") Integer usageState);
+    List<Map<String,Object>> selctUsageLogList(@Param("blockName") String blockName,
+                                               @Param("usageState") Integer usageState);
 
     /**
      * 新增参试设备——我的使用

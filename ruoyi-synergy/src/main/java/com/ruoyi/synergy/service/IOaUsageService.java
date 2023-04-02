@@ -29,6 +29,7 @@ public interface IOaUsageService
      * @return 参试设备——我的使用集合
      */
     public List<Map<String, Object>> selectOaUsageList(String blockName, Integer usageState);
+    List<Map<String,Object>> selctUsageLogList(String blockName,Integer usageState);
 
     /**
      * 新增参试设备——我的使用

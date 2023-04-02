@@ -49,9 +49,10 @@ public class OaUsageController extends BaseController
     public TableDataInfo list(@RequestParam(value = "blockName", required = false) String blockName,
                               @RequestParam(value = "usageState", required = false) Integer usageState)
     {
+        System.out.println(blockName+"======="+usageState);
         startPage();
         List<Map<String, Object>> list = oaUsageService.selectOaUsageList(blockName, usageState);
-        System.out.println(list+"======================================================");
+        System.out.println(list);
         return getDataTable(list);
     }
 
@@ -115,7 +116,7 @@ public class OaUsageController extends BaseController
     }
 
     /**
-     * 删除参试设备——我的使用
+     * 修改参试设备——我的使用入库信息
      */
     @RequiresPermissions("system:usage:warehouse")
     @Log(title = "参试设备——我的使用", businessType = BusinessType.DELETE)
@@ -127,4 +128,15 @@ public class OaUsageController extends BaseController
     {
         return toAjax(oaUsageService.upStorage(usageState,blockStatus,blockId));
     }
+//    /**
+//     * 删除参试设备
+//     */
+//    @RequiresPermissions("system:block:UsageLog:remove")
+//    @Log(title = "参试设备", businessType = BusinessType.DELETE)
+//    @PostMapping( "/remove")
+//    @ResponseBody
+//    public AjaxResult remove(String ids)
+//    {
+//        return toAjax(oaReferenceBlockService.deleteOaReferenceBlockByBlockIds(ids));
+//    }
 }

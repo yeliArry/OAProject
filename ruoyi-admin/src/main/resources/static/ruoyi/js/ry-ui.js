@@ -1111,7 +1111,7 @@ var table = {
             },
             Storage: function(id) {
                 table.set();
-                $.modal.confirm("确定要入库吗？", function() {
+                $.modal.confirm("确定要出库库吗？", function() {
                     var url = $.common.isEmpty(id) ? table.options.Storage : table.options.Storage.replace("{id}", id);
                     if (table.options.type == table_type.bootstrapTreeTable) {
                         $.operate.get(url);

@@ -29,21 +29,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOaUsageVo">
-        select ou.usage_id as usageId,
-               ou.block_id as blockId,
-               orb.block_name as blockName,
-               orb.unit_type as unitType,
-               orb.storage_id as storageId,
-               orb.user_id as userId,
-               su.user_name as userName,
-               orb.creation_time as creationTime,
-               orb.block_status as bookState,
-               orb.usage_state as usageState,
-               ou.del_flag as delFlage,
-               ou.created_by as createdBy,
-               ou.created_time as createdTime,
-               ou.updated_by as updateBy,
-               ou.updated_time as updatedTime
+        select ou.usage_id as       ou_usageId,
+               ou.block_id as       ou_blockId,
+               orb.block_name as    ou_blockName,
+               orb.unit_type as     ou_unitType,
+               orb.storage_id as    ou_storageId,
+               orb.user_id as       ou_userId,
+               su.user_name as      ou_userName,
+               orb.creation_time as ou_creationTime,
+               orb.block_status as  ou_blockState,
+               orb.usage_state as   ou_usageState,
+               ou.del_flag as       ou_delFlage,
+               ou.created_by as     ou_createdBy,
+               ou.created_time as   ou_createdTime,
+               ou.updated_by as     ou_updateBy,
+               ou.updated_time as   ou_updatedTime
         from oa_usage ou
                  left join oa_reference_block orb on ou.block_id = orb.block_id
                  left join sys_user su on orb.user_id = su.user_id
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectOaUsageList"  resultType="java.util.Map">
         <include refid="selectOaUsageVo"/>
         <where>
-             usage_state=2
+            usage_state=2
                 <if test="blockName != null "> and  block_name like concat('%', #{blockName}, '%')</if>
                 <if test="usageState != null "> and orb.usage_state = #{usageState}</if>
 
@@ -64,7 +64,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectOaUsageVo"/>
         where usage_state=2 and usage_id = #{usageId}
     </select>
-        
+    <select id="selctUsageLogList" resultType="java.util.Map">
+        <include refid="selectOaUsageVo"/>
+    </select>
+
     <insert id="insertOaUsage" parameterType="OaUsage" useGeneratedKeys="true" keyProperty="usageId">
         insert into oa_usage
         <trim prefix="(" suffix=")" suffixOverrides=",">

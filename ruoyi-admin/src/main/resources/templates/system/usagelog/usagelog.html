@@ -36,18 +36,13 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('system:usage:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('system:usage:remove')}]];
-        var warehouse = [[${@permission.hasPermi('system:usage:warehouse')}]];
-        var prefix = ctx + "system/usage";
+        // var removeFlag = [[${@permission.hasPermi('system:usage:remove')}]];
+        var prefix = ctx + "/system/usageLog";
 
         $(function() {
             var options = {
-                url: prefix + "/list",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
-                warehouse: prefix + "/warehouse/{id}",
-                exportUrl: prefix + "/export",
+                url: prefix + "/Loyalist",
+                // removeUrl: prefix + "/remove/{id}",
                 modalName: "参试设备——我的使用",
                 columns: [{
                     checkbox: true
@@ -85,25 +80,31 @@
                     {
                         field: 'ou_blockState',
                         title: '参试设备使用状态',
-                        visible: false
+                        formatter : function(value) {
+                            if (value ===1) {
+                                return "未试验"
+                            }else if (value === 2) {
+                                return "实验中"
+                            }else if (value === 3) {
+                                return "试验完成"
+                            }
+                        }
                     },
                 {
                     field: 'ou_usageState',
-                    title: '参试设备使用状态',
+                    title: '参试设备状态',
                     formatter:function (value) {
-                        if (value ==2){
+                        if (value ===2){
                             return "已出库";
                         }
                     }
                 },
-
-
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-danger btn-xs ' + warehouse + '" href="javascript:void(0)" onclick="$.operate.warehouse(\''+row.usageState +'/'+row.blockState+'/'+row.blockId+'\')"><i class="fa fa-remove"></i>入库</a>');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.warehouse(\''+row.blockId+'\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]

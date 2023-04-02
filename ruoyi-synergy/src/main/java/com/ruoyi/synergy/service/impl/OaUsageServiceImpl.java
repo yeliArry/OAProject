@@ -46,6 +46,11 @@ public class OaUsageServiceImpl implements IOaUsageService
         return oaUsageMapper.selectOaUsageList(blockName, usageState);
     }
 
+    @Override
+    public List<Map<String, Object>> selctUsageLogList(String blockName, Integer usageState) {
+        return oaUsageMapper.selctUsageLogList(blockName,usageState);
+    }
+
     /**
      * 新增参试设备——我的使用
      * 
