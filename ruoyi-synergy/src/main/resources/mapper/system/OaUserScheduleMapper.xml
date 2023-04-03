@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updatedTime"    column="updated_time"    />
         <association property="sysUser" javaType="SysUser">
             <id property="userId" column="user_Id"/>
-            <result property="userName" column="user_Name"/>
+            <result property="loginName" column="login_name"/>
         </association>
         <association property="dept" javaType="SysDept">
             <id property="deptId" column="dep_Id"/>
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                u.approval_state,
                u.user_id ,
                su.user_id,
-               su.user_name,
+               su.login_name,
                u.shift_id as usId,
                u.d_attachment,
                u.d_comment,

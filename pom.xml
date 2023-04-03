@@ -194,6 +194,8 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-synergy</module>
+        <module>C:/Users/24690/Desktop/storage</module>
+        <module>ruoyi-storage</module>
     </modules>
     <packaging>pom</packaging>
 

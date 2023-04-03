@@ -22,15 +22,25 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">存放位置：</label>
                 <div class="col-sm-8">
-                    <input name="storageId" class="form-control" type="text" required>
+                    <input type="text" name="storageId" id="storageId">
+<!--                    <input name="storageId" class="form-control" type="text" required>-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">所属部门：</label>
+                <div class="col-sm-8">
+                    <select name="deptId" id="deptId">
+                        <option th:each="dept:${sysDepts}" th:value="${dept.deptId}" th:text="${dept.deptName}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">创建人：</label>
                 <div class="col-sm-8">
-                    <select name="userId" id="userId">
-                        <option th:each="us:${user}" th:value="${user.userId}" th:text="${user.userName}"></option>
-                    </select>
+                    <div class="col-sm-8">
+                        <input name="loginName" th:value="${loginName}" class="form-control" type="text" required>
+                    </div>
                 </div>
             </div>
             <div class="form-group">    
@@ -43,15 +53,30 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">使用状态：</label>
+                <label class="col-sm-3 control-label is-required">设备状态：</label>
                 <div class="col-sm-8">
-                    <select name="usageState" id="usageState">
-                        <option value="1">未出库</option>
-                        <option value="2">已出库</option>
+                    <select name="blockStatus" id="blockStatus">
+                        <option value="1">未试验</option>
+                        <option value="2">实验中</option>
+                        <option value="2">试验完成</option>
                     </select>
                 </div>
             </div>
-
+            <div class="form-group">
+            <label class="font-noraml">附件：</label>
+            <br/>
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+                <span class="btn btn-white btn-file"><span class="fileinput-new">选择文件</span><span class="fileinput-exists">更改</span><input type="file" name="fileId"></span>
+                <span class="fileinput-filename"></span>
+                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+            </div>
+        </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">试验主持人：</label>
+                <div class="col-sm-8">
+                    <input name="testName" class="form-control" type="text" required>
+                </div>
+            </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />

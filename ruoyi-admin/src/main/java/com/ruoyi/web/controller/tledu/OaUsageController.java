@@ -122,9 +122,9 @@ public class OaUsageController extends BaseController
     @Log(title = "参试设备——我的使用", businessType = BusinessType.DELETE)
     @GetMapping( "/warehouse/{blockId}/{blockStatus}/{usageState}")
     @ResponseBody
-    public AjaxResult warehouse(@PathVariable("blockId")Long blockId,
+    public AjaxResult warehouse(@PathVariable("usageState")Long usageState,
                                 @PathVariable("blockStatus")Long blockStatus,
-                                @PathVariable("usageState")Long usageState)
+                                @PathVariable("blockId")Long blockId)
     {
         return toAjax(oaUsageService.upStorage(usageState,blockStatus,blockId));
     }

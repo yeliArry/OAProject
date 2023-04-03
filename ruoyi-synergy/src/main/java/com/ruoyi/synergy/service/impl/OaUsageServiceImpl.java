@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.text.Convert;
 
 /**
- * 参试设备——我的使用Service业务层处理
+ * 参试设备——使用记录Service业务层处理
  * 
  * @author ruoyi
  * @date 2023-03-25

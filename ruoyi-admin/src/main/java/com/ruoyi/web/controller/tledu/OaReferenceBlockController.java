@@ -3,11 +3,14 @@ package com.ruoyi.web.controller.tledu;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.synergy.domain.OaReferenceBlock;
 import com.ruoyi.synergy.service.IOaReferenceBlockService;
+import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -39,6 +42,9 @@ public class OaReferenceBlockController extends BaseController
     private IOaReferenceBlockService oaReferenceBlockService;
 
     @Autowired
+    private ISysDeptService ISysDeptService;
+
+    @Autowired
     private ISysUserService userService;
 
     @RequiresPermissions("system:block:view")
@@ -58,7 +64,6 @@ public class OaReferenceBlockController extends BaseController
     {
         startPage();
         List<Map<String, Object>> list = oaReferenceBlockService.selectOaReferenceBlockList(oaReferenceBlock);
-
         return getDataTable(list);
     }
 
@@ -82,8 +87,14 @@ public class OaReferenceBlockController extends BaseController
     @GetMapping("/add")
     public String add(Model model)
     {
-        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("user",user);
+
+        String loginName = ShiroUtils.getLoginName();
+
+        model.addAttribute("loginName",loginName);
+
+        List<SysDept> sysDepts = ISysDeptService.selectDeptList(new SysDept());
+
+        model.addAttribute("sysDepts",sysDepts);
         return prefix + "/add";
     }
 
@@ -135,6 +146,7 @@ public class OaReferenceBlockController extends BaseController
     @ResponseBody
     public AjaxResult remove(String ids)
     {
+
         return toAjax(oaReferenceBlockService.deleteOaReferenceBlockByBlockIds(ids));
     }
 

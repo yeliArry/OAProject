@@ -56,11 +56,12 @@ public class OaUserScheduleController extends BaseController
     @RequiresPermissions("system:schedule:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(OaUserSchedule oaUserSchedule)
+    public TableDataInfo list(OaUserSchedule oaUserSchedule,Model model)
     {
         startPage();
         List<OaUserSchedule> list = oaUserScheduleService.selectOaUserScheduleList(oaUserSchedule);
-
+        List<SysUser> userList = userService.selectUserList(new SysUser());
+        model.addAttribute("userList",userList);
         return getDataTable(list);
     }
 
@@ -87,9 +88,10 @@ public class OaUserScheduleController extends BaseController
         List<SysUser> list = userService.selectUserList(new SysUser());
         model.addAttribute("list",list);
         String loginName = ShiroUtils.getLoginName();
+
+        model.addAttribute("loginName",loginName);
         SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("user",user);
-        model.addAttribute("loginName",loginName);
         return prefix + "/add";
     }
 

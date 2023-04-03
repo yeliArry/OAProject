@@ -37,6 +37,13 @@ public class OaReferenceBlock extends BaseEntity
     @Excel(name = "用户id")
     private Long userId;
 
+    @Excel(name = "所属部门")
+    private Long departmentId;
+
+    @Excel(name = "附件")
+    private String fileId;
+    @Excel(name = "试验主持人")
+    private String testName;
     private SysUser sysUser;
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -71,6 +78,31 @@ public class OaReferenceBlock extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
+
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
 
     public SysUser getSysUser() {
         return sysUser;

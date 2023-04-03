@@ -11,11 +11,11 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>参试设备：</label>
+                                <label>设备名称：</label>
                                 <input type="text" name="blockName"/>
                             </li>
                             <li>
-                                <label>参试设备使用状态：</label>
+                                <label>操作名称：</label>
                                 <select name="usageState" id="usageState">
                                     <option value="" th:text="请选择..."></option>
                                     <option value="2">已出库</option>
@@ -41,59 +41,63 @@
 
         $(function() {
             var options = {
-                url: prefix + "/Loyalist",
+                url: "http://localhost:8080/system/usageLog/Loyalist",
                 // removeUrl: prefix + "/remove/{id}",
                 modalName: "参试设备——我的使用",
                 columns: [{
                     checkbox: true
                 },
                 {
-                    field: 'ou_usageId',
+                    field: 'UsageLog.usageId',
                     title: '编号',
+                    visible: false
+
                 },
                 {
-                    field: 'ou_blockId',
-                    title: '参试设备编号',
-                    visible: false
+                    field: 'oaReferenceBlock.blockId',
+                    title: '编号',
                 },
 
                     {
-                        field: 'ou_blockName',
+                        field: 'oaReferenceBlock.blockName',
                         title: '设备名称'
                     },
                     {
-                        field: 'ou_unitType',
+                        field: 'oaReferenceBlock.unitType',
                         title: '设备型号'
                     },
                     {
-                        field: 'ou_storageId',
+                        field: 'oaReferenceBlock.storageId',
                         title: '存放位置'
                     },
                     {
-                        field: 'ou_userName',
+                        field: 'oaReferenceBlock.sysUser.loginName',
                         title: '创建人'
                     },
                     {
-                        field: 'ou_creationTime',
+                        field: 'oaReferenceBlock.creationTime',
                         title: '创建时间'
                     },
                     {
-                        field: 'ou_blockState',
+                        field: 'oaReferenceBlock.blockStatus',
                         title: '参试设备使用状态',
                         formatter : function(value) {
-                            if (value ===1) {
+                            if (value ==1) {
                                 return "未试验"
-                            }else if (value === 2) {
+                            }else if (value == 2) {
                                 return "实验中"
-                            }else if (value === 3) {
+                            }else if (value == 3) {
                                 return "试验完成"
                             }
                         }
                     },
                 {
-                    field: 'ou_usageState',
+                    field: 'oaReferenceBlock.usageState',
                     title: '参试设备状态',
                     formatter:function (value) {
+                        if (value ===1){
+                            return "未出库"
+                        }
                         if (value ===2){
                             return "已出库";
                         }

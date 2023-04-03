@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">排班名称：</label>
                     <div class="col-sm-8">
-                        <input class="form-control" maxlength="30" name="scheduleName"  id="scheduleName" required type="text">
+                        <input class="form-control" maxlength="30" name="scheduleName"  id="scheduleName" required type="text" >
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">部门：</label>
                         <div class="col-sm-8">
-                            <input class="form-control " readonly id="deptId" name="deptId" th:value="${user.getDeptId()}" type="text">
+                            <input class="form-control " readonly id="deptId" name="deptId" th:value="${user.getDeptId()}" type="text" required>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <label class="col-sm-4 control-label is-required">创建时间：</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
-                                <input class="form-control" name="createTime" placeholder="yyyy-MM-dd" type="text">
+                                <input class="form-control" name="createTime" placeholder="yyyy-MM-dd" type="text" required>
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                         </div>
@@ -53,10 +53,10 @@
                 </div>
                 <div class="row" >
                     <div class="col-sm-6">
-                        <div class="form-group" style="margin-left: 58px;">
+                        <div class="form-group" >
                             <label class="col-sm-4 control-label is-required">审批状态：</label>
                             <div class="col-sm-8">
-                                <select name="approvalState" id="approvalState">
+                                <select name="approvalState" id="approvalState" required>
                                     <option value="1">已同意</option>
                                 </select>
                             </div>
@@ -88,7 +88,6 @@
             <div class="row">
                 <div class="col-sm-12" style="margin-left: 85px;">
                     <button type="button" class="btn btn-white btn-sm" onclick="addRow()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delRow()"><i class="fa fa-minus"> 删除</i></button>
                     <div class="col-sm-12 select-table table-striped" style="padding-left: 0px;margin-left: 9px;padding-right: 179px;">
                         <table id="bootstrap-table" ></table>
                     </div>
@@ -110,7 +109,7 @@
 
         function submitHandler() {
             var data = $("#form-add").serializeArray();
-            alert(JSON.stringify(data))
+            // alert(JSON.stringify(data))
             $.operate.saveModal("/system/schedule/add", data);
 
         }
@@ -150,14 +149,6 @@
                     formatter: function(value, row, index) {
                         var data = [{ index: index, type: value }];
                         return $("#goodsTypeTpl").tmpl(data).html();
-                    }
-                },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        var value = $.common.isNotEmpty(row.index) ? row.index : $.table.serialNumber(index);
-                        return '<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="sub.delRowByIndex(\'' + value + '\')"><i class="fa fa-remove"></i>删除</a>';
                     }
                 }]
             };
@@ -206,7 +197,7 @@
             <option
                 th:each="cooperationPlatformDO : ${list}" th:selected="${cooperationPlatformDO.userName}"
                 th:value="${cooperationPlatformDO.userId}"
-                th:text="${cooperationPlatformDO.userName}">
+                th:text="${cooperationPlatformDO.loginName}">
             </option>
         </select>
     </div>

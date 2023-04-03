@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.synergy.domain.OaUsage;
+import com.ruoyi.synergy.domain.UsageLog;
 import com.ruoyi.synergy.service.IOaUsageService;
 import com.ruoyi.synergy.service.UsageLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,6 +37,7 @@ public class UsageLogController extends BaseController
     @GetMapping()
     public String usage()
     {
+        System.out.println("~~~~~~~~~~~~~~~~");
         return prefix + "/usagelog";
     }
 
@@ -49,8 +51,19 @@ public class UsageLogController extends BaseController
                               @RequestParam(value = "ou_usageState", required = false) Integer usageState)
     {
         startPage();
-        List<Map<String, Object>> list = usageLogService.selctUsageLogList(blockName, usageState);
-        System.out.println(list);
+        List<UsageLog> list = usageLogService.selctUsageLogList(blockName, usageState);
         return getDataTable(list);
+    }
+    /**
+     * 删除参试设备
+     */
+    @RequiresPermissions("system:block:remove")
+    @Log(title = "参试设备", businessType = BusinessType.DELETE)
+    @PostMapping( "/remove")
+    @ResponseBody
+    public AjaxResult remove(String[] ids)
+    {
+
+        return toAjax(usageLogService.deleteOaUsageByUsageIds(ids));
     }
 }

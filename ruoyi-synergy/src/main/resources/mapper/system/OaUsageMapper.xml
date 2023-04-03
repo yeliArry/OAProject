@@ -23,39 +23,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="usageState" column="usage_state"/>
             <association property="sysUser" javaType="SysUser">
                 <id property="userId" column="user_Id"/>
-                <result property="userName" column="user_Name"/>
+                <result property="loginName" column="login_name"/>
             </association>
         </association>
     </resultMap>
 
     <sql id="selectOaUsageVo">
-        select ou.usage_id as       ou_usageId,
-               ou.block_id as       ou_blockId,
-               orb.block_name as    ou_blockName,
-               orb.unit_type as     ou_unitType,
-               orb.storage_id as    ou_storageId,
-               orb.user_id as       ou_userId,
-               su.user_name as      ou_userName,
-               orb.creation_time as ou_creationTime,
-               orb.block_status as  ou_blockState,
-               orb.usage_state as   ou_usageState,
-               ou.del_flag as       ou_delFlage,
-               ou.created_by as     ou_createdBy,
-               ou.created_time as   ou_createdTime,
-               ou.updated_by as     ou_updateBy,
-               ou.updated_time as   ou_updatedTime
-        from oa_usage ou
-                 left join oa_reference_block orb on ou.block_id = orb.block_id
-                 left join sys_user su on orb.user_id = su.user_id
+        select
+               ob.block_id as blockId,
+               ob.block_name as blockName,
+               ob.unit_type as unitType,
+               ob.storage_id as storageId,
+               su.user_id as userid,
+               su.login_name as loginName,
+               ob.creation_time as creationTime,
+               ob.block_status as blockStatus,
+               ob.usage_state as usageState,
+               ob.del_flag as delFlag,
+               ob.created_by as createdBy,
+               ob.created_time as createdTime,
+               ob.updated_by as updateBy,
+               ob.updated_time as updateTime
+        from oa_reference_block ob
+                 left  join sys_user su on ob.user_id = su.user_id
 
 </sql>
 
     <select id="selectOaUsageList"  resultType="java.util.Map">
         <include refid="selectOaUsageVo"/>
         <where>
-            usage_state=2
-                <if test="blockName != null "> and  block_name like concat('%', #{blockName}, '%')</if>
-                <if test="usageState != null "> and orb.usage_state = #{usageState}</if>
+            ob.usage_state=2
+                <if test="blockName != null"> and  ob.block_name like concat('%', #{blockName}, '%')</if>
+                <if test="usageState != null "> and ob.usage_state = #{usageState}</if>
+
 
         </where>
     </select>

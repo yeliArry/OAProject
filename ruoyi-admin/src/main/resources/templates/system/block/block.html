@@ -27,6 +27,15 @@
                                 </select>
                             </li>
                             <li>
+                                <label>设备状态：</label>
+                                <select name="blockStatus" id="blockStatus" >
+                                    <option value="" th:text="请选择设备状态..."></option>
+                                    <option value="1">未试验</option>
+                                    <option value="2">实验中</option>
+                                    <option value="3">实验完成</option>
+                                </select>
+                            </li>
+                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
@@ -38,6 +47,10 @@
             <div class="btn-group-sm" id="toolbar" role="group">
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:block:add">
                     <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+                   shiro:hasPermission="system:duty:remove">
+                    <i class="fa fa-remove"></i> 删除
                 </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:block:export">
                     <i class="fa fa-download"></i> 导出
@@ -52,6 +65,7 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:block:edit')}]];
         var Storage = [[${@permission.hasPermi('system:block:Storage')}]];
+        var removeFlag = [[${@permission.hasPermi('system:duty:remove')}]];
         var prefix = ctx + "system/block";
 
         $(function() {
@@ -60,6 +74,7 @@
                 createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
                 Storage: prefix + "/Storage/{id}",
+                removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
                 modalName: "参试设备",
                 columns: [{
@@ -83,7 +98,7 @@
                     title: '存放位置'
                 },
                 {
-                    field: 'userName',
+                    field: 'loginName',
                     title: '创建人'
                 },
                 {
@@ -121,7 +136,8 @@
                     formatter: function(value, row, index) {
                         var actions = [];
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.blockId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a id="aa'+row.blockId+'" class="btn btn-danger btn-xs ' + Storage + '" href="javascript:void(0)" onclick="$.operate.Storage(\'' + row.blockId + "/" +row.blockStatus + '\')"><i class="fa fa-remove"></i>出库</a>');
+                        actions.push('<a id="aa'+row.blockId+'" class="btn btn-danger btn-xs ' + Storage + '" href="javascript:void(0)" onclick="$.operate.Storage(\'' + row.blockId + "/" +row.blockStatus + '\')"><i class="fa fa-3x"></i>出库</a>');
+                        actions.push('<a id="bb'+row.blockId+'" class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.blockId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         if (row.usageState == 2){
                             let id = "#aa"+row.blockId;
                             setTimeout(function (){

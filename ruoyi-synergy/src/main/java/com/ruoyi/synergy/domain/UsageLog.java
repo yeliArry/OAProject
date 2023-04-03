@@ -20,7 +20,7 @@ public class UsageLog extends BaseEntity {
     /**
      * 编号
      */
-    private Long logId;
+    private Long usageId;
 
     /**
      * 参试设备id
@@ -68,12 +68,12 @@ public class UsageLog extends BaseEntity {
         this.oaReferenceBlock = oaReferenceBlock;
     }
 
-    public Long getLogId() {
-        return logId;
+    public Long getUsageId() {
+        return usageId;
     }
 
-    public void setLogId(Long logId) {
-        this.logId = logId;
+    public void setUsageId(Long usageId) {
+        this.usageId = usageId;
     }
 
     public Long getBlockId() {
@@ -127,7 +127,7 @@ public class UsageLog extends BaseEntity {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("usageId", getLogId())
+                .append("usageId", getUsageId())
                 .append("blockId", getBlockId())
                 .append("oaReferenceBlock", getOaReferenceBlock())
                 .append("delFlag", getDelFlag())

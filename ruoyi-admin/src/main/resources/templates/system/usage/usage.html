@@ -53,42 +53,42 @@
                     checkbox: true
                 },
                 {
-                    field: 'ou_usageId',
+                    field: 'usageId',
                     title: '编号',
+                    visible: false
                 },
                 {
-                    field: 'ou_blockId',
-                    title: '参试设备编号',
-                    visible: false
+                    field: 'blockId',
+                    title: '编号',
                 },
 
                     {
-                        field: 'ou_blockName',
+                        field: 'blockName',
                         title: '设备名称'
                     },
                     {
-                        field: 'ou_unitType',
+                        field: 'unitType',
                         title: '设备型号'
                     },
                     {
-                        field: 'ou_storageId',
+                        field: 'storageId',
                         title: '存放位置'
                     },
                     {
-                        field: 'ou_userName',
+                        field: 'loginName',
                         title: '创建人'
                     },
                     {
-                        field: 'ou_creationTime',
+                        field: 'creationTime',
                         title: '创建时间'
                     },
                     {
-                        field: 'ou_blockState',
+                        field: 'blockStatus',
                         title: '参试设备使用状态',
                         visible: false
                     },
                 {
-                    field: 'ou_usageState',
+                    field: 'usageState',
                     title: '参试设备使用状态',
                     formatter:function (value) {
                         if (value ==2){
@@ -103,7 +103,7 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-danger btn-xs ' + warehouse + '" href="javascript:void(0)" onclick="$.operate.warehouse(\''+row.usageState +'/'+row.blockState+'/'+row.blockId+'\')"><i class="fa fa-remove"></i>入库</a>');
+                        actions.push('<a class="btn btn-danger btn-xs ' + warehouse + '" href="javascript:void(0)" onclick="$.operate.warehouse(\''+row.usageState +'/'+row.blockStatus+'/'+row.blockId+'\')"><i class="fa fa-remove"></i>入库</a>');
                         return actions.join('');
                     }
                 }]

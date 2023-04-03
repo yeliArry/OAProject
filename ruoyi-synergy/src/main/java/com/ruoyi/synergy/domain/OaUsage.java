@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Date;
 
 /**
- * 参试设备——我的使用对象 oa_usage
+ * 参试设备——使用记录 oa_usage
  *
  * @author ruoyi
  * @date 2023-03-25

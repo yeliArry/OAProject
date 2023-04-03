@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.synergy.mapper.UsageLogMapper">
     
     <resultMap type="UsageLog" id="OaUsageResult">
-        <result property="logId"    column="usage_id"    />
+        <result property="usageId"    column="usage_id"    />
         <result property="blockId"    column="block_id"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createdBy"    column="created_by"    />
@@ -23,32 +23,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="usageState" column="usage_state"/>
             <association property="sysUser" javaType="SysUser">
                 <id property="userId" column="user_Id"/>
-                <result property="userName" column="user_Name"/>
+                <result property="loginName" column="login_Name"/>
             </association>
         </association>
     </resultMap>
-
     <select id="selctUsageLogList" resultMap="OaUsageResult">
-        select ou.usage_id as ou_usageId,
-               ou.block_id as ou_blockId,
-               orb.block_name as ou_blockName,
-               orb.unit_type as ou_unitType,
-               orb.storage_id as ou_storageId,
-               orb.user_id as ou_userId,
-               su.user_name as ou_userName,
-               orb.creation_time as ou_creationTime,
-               orb.block_status as ou_blockState,
-               orb.usage_state as ou_usageState,
-               ou.del_flag as ou_delFlage,
-               ou.created_by as ou_createdBy,
-               ou.created_time as ou_createdTime,
-               ou.updated_by as ou_updateBy,
-               ou.updated_time as ou_updatedTime
-        from oa_usage ou
-                 left join oa_reference_block orb on ou.block_id = orb.block_id
-                 left join sys_user su on orb.user_id = su.user_id
+        select ob.block_id,
+               ob.block_name,
+               ob.unit_type,
+               ob.storage_id,
+               su.user_id,
+               su.login_Name,
+               ob.creation_time,
+               ob.block_status,
+               ob.usage_state,
+               ob.del_flag,
+               ob.created_by,
+               ob.created_time,
+               ob.updated_by ,
+               ob.updated_time
+        from oa_reference_block ob
+                 left  join sys_user su on ob.user_id = su.user_id
     </select>
 
+    <delete id="deleteOaUsageByUsageId" parameterType="Long">
+        delete from oa_reference_block where block_id = #{blockId}
+    </delete>
 
-
+    <delete id="deleteOaUsageByUsageIds" parameterType="String">
+        delete from oa_reference_block where block_id in
+        <foreach item="blockId" collection="array" open="(" separator="," close=")">
+            #{blockId}
+        </foreach>
+    </delete>
 </mapper>

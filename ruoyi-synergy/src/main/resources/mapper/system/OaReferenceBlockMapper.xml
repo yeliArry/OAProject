@@ -10,9 +10,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="unitType"    column="unit_type"    />
         <result property="storageId"    column="storage_id"    />
         <result property="userId"    column="user_id"    />
+        <result property="departmentId" column="department_id"/>
         <result property="creationTime"    column="creation_time"    />
         <result property="blockStatus"    column="block_status"    />
         <result property="usageState"    column="usage_state"    />
+        <result property="fileId" column="file_id"/>
+        <result property="testName" column="test_name"/>
         <result property="delFlag"    column="del_flag"    />
         <result property="createdBy"    column="created_by"    />
         <result property="createdTime"    column="created_time"    />
@@ -30,9 +33,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                unit_type,
                storage_id,
                user_id,
+               department_id,
                creation_time,
                block_status,
                usage_state,
+               file_id,
+               test_name,
                del_flag,
                created_by,
                created_time,
@@ -46,10 +52,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
               ob.unit_type as unitType,
               ob.storage_id as storageId,
                su.user_id as userid,
-               su.user_name as userName,
+               ob.department_id as departmentId,
+               su.login_name as loginName,
                ob.creation_time as creationTime,
                ob.block_status as blockStatus,
                ob.usage_state as usageState,
+               ob.file_id as fileId,
+               ob.test_name as testName,
                ob.del_flag as delFlag,
                ob.created_by as createdBy,
                ob.created_time as createdTime,
@@ -61,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectOaReferenceBlockList" resultType="java.util.Map">
         <include refid="selectOaReferenceBlockVo2"/>
         <where>
-            ob.usage_state=1 or ob.usage_state=2
+            (ob.usage_state=1 or ob.usage_state=2)
             <if test="blockName != null  and blockName != ''"> and  ob.block_name like concat('%', #{blockName}, '%')</if>
             <if test="unitType != null  and unitType != ''"> and  ob.unit_type = #{unitType}</if>
             <if test="storageId != null  and storageId != ''"> and  ob.storage_id like concat('%', #{storageId}, '%')</if>
@@ -70,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="usageState != null "> and  ob.usage_state = #{usageState}</if>
         </where>
     </select>
+
     
     <select id="selectOaReferenceBlockByBlockId" parameterType="Long" resultMap="OaReferenceBlockResult">
         <include refid="selectOaReferenceBlockVo"/>
@@ -83,9 +93,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="unitType != null and unitType != ''">unit_type,</if>
             <if test="storageId != null and storageId != ''">storage_id,</if>
             <if test="userId != null">user_id,</if>
+
+            <if test="departmentId != null">department_id,</if>
             <if test="creationTime != null">creation_time,</if>
             <if test="blockStatus != null">block_status,</if>
             <if test="usageState != null">usage_state,</if>
+            <if test="fileId">file_id,</if>
+            <if test="testName">test_Name,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createdBy != null">created_by,</if>
             <if test="createdTime != null">created_time,</if>
@@ -97,9 +111,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="unitType != null and unitType != ''">#{unitType},</if>
             <if test="storageId != null and storageId != ''">#{storageId},</if>
             <if test="userId != null">#{userId},</if>
+            <if test="departmentId != null">#{departmentId}</if>
             <if test="creationTime != null">#{creationTime},</if>
             <if test="blockStatus != null">#{blockStatus},</if>
             <if test="usageState != null">#{usageState},</if>
+            <if test="fileId !=null">#{fileId},</if>
+            <if test="testName !=null">#{testName},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createdBy != null">#{createdBy},</if>
             <if test="createdTime != null">#{createdTime},</if>

@@ -17,7 +17,7 @@
             <result property="userId" column="user_id"/>
             <association property="sysUser" javaType="SysUser">
                 <id property="userId" column="user_Id"/>
-                <result property="userName" column="user_Name"/>
+                <result property="loginName" column="login_name"/>
             </association>
 <!--            <association property="dept" select="oaScheduleDept" javaType="SysDept"/>-->
         </association>
@@ -66,7 +66,7 @@
             oau.s_name as scheduleName,
             sd.dept_name as deptName,
             oau.user_id as userId,
-            su.user_name as userName,
+            su.login_name as LoginName,
             o.current_time as currentTime,
             o.d_people as dPeople,
             o.d_state as State
